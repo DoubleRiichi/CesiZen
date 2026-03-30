@@ -18,7 +18,7 @@ use utoipa_swagger_ui::SwaggerUi;
 use dotenv::dotenv;
 
 use crate::docs::ApiDoc;
-use crate::modules::{article, feeling, tag, user};
+use crate::modules::{article, feeling, feeling_category, feeling_tracker, tag, user};
 use crate::modules::article::handler::{create_article, get_article_by_id, search_article};
 
 #[derive(Clone)]
@@ -48,6 +48,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .nest("/user", user::router::router())
         .nest("/tag", tag::router::router())
         .nest("/feeling", feeling::router::router())
+        .nest("/feeling_category", feeling_category::router::router())
+        .nest("/feeling_tracker", feeling_tracker::router::router())
         .merge(
             SwaggerUi::new("/swagger-ui")
                 .url("/api-doc/openapi.json", ApiDoc::openapi()),
