@@ -1,6 +1,7 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
+use validator::Validate;
 use crate::modules::feeling::dto::FeelingGet;
 use crate::modules::feeling_tracker::model::{ FeelingTrackerWithFeelingRow};
 
@@ -37,24 +38,28 @@ impl From<FeelingTrackerWithFeelingRow> for FeelingTrackerGet {
     }
 }
 
-#[derive(Deserialize, Debug, ToSchema)]
+#[derive(Deserialize, Validate, Debug, ToSchema)]
 pub struct FeelingTrackerCreate {
     pub user_id: i32,
     pub feeling_id: i32,
     pub timestamp_start: DateTime<Utc>,
     pub timestamp_end: DateTime<Utc>,
+    #[validate(range(min = 1, max = 10))]
     pub intensity: i16,
+    #[validate(length(max = 2000))]
     pub notes: String,
     pub location: String,
 }
 
-#[derive(Deserialize, Debug, ToSchema)]
+#[derive(Deserialize, Validate, Debug, ToSchema)]
 pub struct FeelingTrackerUpdate {
     pub user_id: i32,
     pub feeling_id: i32,
     pub timestamp_start: DateTime<Utc>,
     pub timestamp_end: DateTime<Utc>,
+    #[validate(range(min = 1, max = 10))]
     pub intensity: i16,
+    #[validate(length(max = 2000))]
     pub notes: String,
     pub location: String,
 }

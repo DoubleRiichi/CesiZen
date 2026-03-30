@@ -39,7 +39,7 @@ pub async fn create_feeling_category(
     Json(body): Json<FeelingCategoryCreate>
 ) -> Result<Json<i32>, AppError> {
 
-    FeelingCategoryRepository::create(&pool.db, body)
+    FeelingCategoryService::create(&pool.db, body)
         .await.map(Json)
 }
 
@@ -71,6 +71,6 @@ pub async fn delete_feeling_category(
     Path(id): Path<i32>,
 ) -> Result<Json<()>, AppError> {
 
-    FeelingService::delete(&pool.db, id)
+    FeelingCategoryService::delete(&pool.db, id)
         .await.map(Json)
 }
