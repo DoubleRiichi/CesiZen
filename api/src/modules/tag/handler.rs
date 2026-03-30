@@ -14,7 +14,7 @@ use crate::modules::tag::service::TagService;
 
 #[utoipa::path(
     get,
-    path = "/tag/:id",
+    path = "/tag/{id}",
     tag = "tag",
 )]
 pub async fn get_tag_by_id(
@@ -45,7 +45,7 @@ pub async fn create_tag(
 
 #[utoipa::path(
     delete,
-    path = "/tag/:id",
+    path = "/tag/{id}",
     tag = "tag",
 )]
 #[debug_handler]

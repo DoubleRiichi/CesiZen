@@ -1,4 +1,4 @@
-use chrono::NaiveDateTime;
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 use crate::modules::feeling_category::model::FeelingCategoryRow;
@@ -7,8 +7,8 @@ use crate::modules::feeling_category::model::FeelingCategoryRow;
 pub struct FeelingCategoryGet {
     pub id: i32,
     pub name: String,
-    pub created_at: NaiveDateTime,
-    pub updated_at: NaiveDateTime,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
 
 }
 
@@ -35,8 +35,8 @@ pub struct FeelingCategoryUpdate {
 #[derive(Deserialize, Debug, ToSchema)]
 pub struct FeelingCategorySearchParams {
     pub name: Option<String>,
-    pub start_at: Option<chrono::NaiveDateTime>,
-    pub end_at: Option<chrono::NaiveDateTime>,
-    pub cursor: Option<chrono::NaiveDateTime>,
+    pub start_at: Option<chrono::DateTime<Utc>>,
+    pub end_at: Option<chrono::DateTime<Utc>>,
+    pub cursor: Option<chrono::DateTime<Utc>>,
     pub page_size: Option<i32>,
 }

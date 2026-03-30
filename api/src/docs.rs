@@ -1,5 +1,3 @@
-use utoipa::OpenApi;
-
 #[derive(OpenApi)]
 #[openapi(
     paths(
@@ -20,6 +18,11 @@ use utoipa::OpenApi;
         crate::modules::tag::handler::create_tag,
         crate::modules::tag::handler::delete_tag,
         crate::modules::tag::handler::all_tag,
+        //Feelings
+        crate::modules::feeling::handler::get_feeling_by_id,
+        crate::modules::feeling::handler::create_feeling,
+        crate::modules::feeling::handler::search_feeling,
+        crate::modules::feeling::handler::delete_feeling,
 
         // add the rest...
     ),
@@ -39,12 +42,16 @@ use utoipa::OpenApi;
             crate::modules::tag::dto::TagGet,
             crate::modules::tag::dto::TagCreate,
 
+            crate::modules::feeling::dto::FeelingGet,
+            crate::modules::feeling::dto::FeelingCreate,
+            crate::modules::feeling::dto::FeelingSearchParams
         )
     ),
     tags(
         (name = "article", description = "Article management endpoints"),
         (name = "user", description = "User management"),
-        (name = "tag", description = "Tags management")
+        (name = "tag", description = "Tags management"),
+        (name = "feeling", description = "Feeling management"),
 
     ),
     info(
@@ -54,3 +61,5 @@ use utoipa::OpenApi;
     )
 )]
 pub struct ApiDoc;
+
+use utoipa::OpenApi;

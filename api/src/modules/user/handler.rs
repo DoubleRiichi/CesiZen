@@ -13,7 +13,7 @@ use crate::modules::user::service::UserService;
 
 #[utoipa::path(
     get,
-    path = "/user/:id",
+    path = "/user/{id}",
     tag = "user",
 )]
 pub async fn get_user_by_id(
@@ -61,7 +61,7 @@ pub async fn search_user(
 
 #[utoipa::path(
     put,
-    path = "/user/:id",
+    path = "/user/{id}",
     tag = "user",
     request_body = ArticleUpdate,
 )]
@@ -79,7 +79,7 @@ pub async fn update_user(
 
 #[utoipa::path(
     delete,
-    path = "/user/:id",
+    path = "/user/{id}",
     tag = "user",
 )]
 #[debug_handler]

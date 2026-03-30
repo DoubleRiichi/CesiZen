@@ -1,7 +1,8 @@
-use chrono::NaiveDateTime;
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
-use crate::modules::feeling::model::{ FeelingRow, FeelingWithCategoryRow};
+use validator::Validate;
+use crate::modules::feeling::model::{FeelingRow, FeelingWithCategoryRow};
 use crate::modules::feeling_category::dto::FeelingCategoryGet;
 use crate::modules::user::model::UserRow;
 
@@ -10,8 +11,8 @@ pub struct FeelingGet {
     pub id: i32,
     pub feeling_category: FeelingCategoryGet,
     pub name: String,
-    pub created_at: NaiveDateTime,
-    pub updated_at: NaiveDateTime,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
 }
 
 impl From<(FeelingWithCategoryRow)> for FeelingGet {
@@ -32,15 +33,17 @@ impl From<(FeelingWithCategoryRow)> for FeelingGet {
 }
 
 
-#[derive(Deserialize, Debug, ToSchema)]
+#[derive(Deserialize, Validate, Debug, ToSchema)]
 pub struct FeelingCreate {
     pub feeling_category_id: i32,
+    #[validate(length(min = 4, max = 100))]
     pub name: String,
 }
 
-#[derive(Deserialize, Debug, ToSchema)]
+#[derive(Deserialize, Validate, Debug, ToSchema)]
 pub struct FeelingUpdate {
     pub feeling_category_id: i32,
+    #[validate(length(min = 4, max = 100))]
     pub name: String
 }
 
@@ -48,8 +51,8 @@ pub struct FeelingUpdate {
 pub struct FeelingSearchParams {
     pub name: Option<String>,
     pub feeling_category_id: Option<i32>,
-    pub start_at: Option<chrono::NaiveDateTime>,
-    pub end_at: Option<chrono::NaiveDateTime>,
-    pub cursor: Option<chrono::NaiveDateTime>,
+    pub start_at: Option<chrono::DateTime<Utc>>,
+    pub end_at: Option<chrono::DateTime<Utc>>,
+    pub cursor: Option<chrono::DateTime<Utc>>,
     pub page_size: Option<i32>,
 }

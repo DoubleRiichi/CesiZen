@@ -1,4 +1,5 @@
 use std::option::Option;
+use chrono::Utc;
 use serde::{Serialize, Deserialize};
 use utoipa::ToSchema;
 use validator::Validate;
@@ -13,8 +14,8 @@ pub struct UserGet {
     pub avatar: String,
     pub is_active: bool,
     pub role: String,
-    pub created_at: chrono::NaiveDateTime,
-    pub updated_at: chrono::NaiveDateTime,
+    pub created_at: chrono::DateTime<Utc>,
+    pub updated_at: chrono::DateTime<Utc>,
 }
 
 impl From<(UserRow)> for UserGet {
@@ -89,8 +90,8 @@ pub struct UserSearchParams {
     pub avatar: Option<String>,
     pub is_active: Option<bool>,
     pub role: Option<UserRole>,
-    pub start_at: Option<chrono::NaiveDateTime>,
-    pub end_at: Option<chrono::NaiveDateTime>,
-    pub cursor: Option<chrono::NaiveDateTime>,
+    pub start_at: Option<chrono::DateTime<Utc>>,
+    pub end_at: Option<chrono::DateTime<Utc>>,
+    pub cursor: Option<chrono::DateTime<Utc>>,
     pub page_size: Option<i32>,
 }

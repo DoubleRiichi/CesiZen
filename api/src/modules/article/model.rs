@@ -1,4 +1,5 @@
 use std::fmt;
+use chrono::Utc;
 use serde::Deserialize;
 use crate::modules::tag::model::TagRow;
 use crate::modules::user::model::UserRole;
@@ -11,8 +12,8 @@ pub struct ArticleRow {
     pub content: String,
     pub is_deleted: bool,
     pub visibility: ArticleVisibility,
-    pub created_at: chrono::NaiveDateTime,
-    pub updated_at: chrono::NaiveDateTime,
+    pub created_at: chrono::DateTime<Utc>,
+    pub updated_at: chrono::DateTime<Utc>,
 }
 
 #[derive(sqlx::FromRow, Debug)]
@@ -21,8 +22,8 @@ pub struct ArticleWithAuthorRow {
     pub title: String,
     pub content: String,
     pub is_deleted: bool,
-    pub created_at: chrono::NaiveDateTime,
-    pub updated_at: chrono::NaiveDateTime,
+    pub created_at: chrono::DateTime<Utc>,
+    pub updated_at: chrono::DateTime<Utc>,
     pub user_id: i32,
     pub username: String,
     pub user_role: UserRole,

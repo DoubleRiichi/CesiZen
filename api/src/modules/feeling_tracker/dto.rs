@@ -1,4 +1,4 @@
-use chrono::NaiveDateTime;
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 use crate::modules::feeling::dto::FeelingGet;
@@ -10,13 +10,13 @@ pub struct FeelingTrackerGet {
     pub user_id: i32,
     pub feeling: String,
     pub feeling_category: String,
-    pub timestamp_start: NaiveDateTime,
-    pub timestamp_end: NaiveDateTime,
+    pub timestamp_start: DateTime<Utc>,
+    pub timestamp_end: DateTime<Utc>,
     pub intensity: i8,
     pub notes: String,
     pub location: String,
-    pub created_at: NaiveDateTime,
-    pub updated_at: NaiveDateTime
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>
 }
 
 impl From<FeelingTrackerWithFeelingRow> for FeelingTrackerGet {
@@ -42,8 +42,8 @@ pub struct FeelingTrackerCreate {
     pub user_id: i32,
     pub feeling_id: i32,
     pub feeling_category_id: i32,
-    pub timestamp_start: NaiveDateTime,
-    pub timestamp_end: NaiveDateTime,
+    pub timestamp_start: DateTime<Utc>,
+    pub timestamp_end: DateTime<Utc>,
     pub intensity: i8,
     pub notes: String,
     pub location: String,
@@ -53,8 +53,8 @@ pub struct FeelingTrackerCreate {
 pub struct FeelingTrackerUpdate {
     pub feeling_id: i32,
     pub feeling_category_id: i32,
-    pub timestamp_start: NaiveDateTime,
-    pub timestamp_end: NaiveDateTime,
+    pub timestamp_start: DateTime<Utc>,
+    pub timestamp_end: DateTime<Utc>,
     pub intensity: i8,
     pub notes: String,
     pub location: String,
@@ -65,8 +65,8 @@ pub struct FeelingTrackerUpdate {
 pub struct FeelingTrackerSearchParams {
     pub user_id: Option<i32>,
     pub feeling_id: Option<i32>,
-    pub start_date: Option<NaiveDateTime>,
-    pub end_date: Option<NaiveDateTime>,
-    pub cursor: Option<NaiveDateTime>,
+    pub start_date: Option<DateTime<Utc>>,
+    pub end_date: Option<DateTime<Utc>>,
+    pub cursor: Option<DateTime<Utc>>,
     pub page_size: Option<i32>,
 }
