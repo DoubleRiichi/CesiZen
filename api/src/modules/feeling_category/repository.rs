@@ -11,7 +11,7 @@ impl FeelingCategoryRepository {
     pub async fn by_id(pool: &PgPool, id: i32) -> Result<FeelingCategoryRow, sqlx::Error> {
         let category = sqlx::query_as::<_, FeelingCategoryRow>(
             r#"
-            SELECT id, name
+            SELECT *
             FROM feeling_category
             WHERE id = $1
             "#
@@ -31,7 +31,7 @@ impl FeelingCategoryRepository {
 
         let mut qb = QueryBuilder::new(
             r#"
-            SELECT id, name
+            SELECT *
             FROM feeling_category
             WHERE 1=1
             "#

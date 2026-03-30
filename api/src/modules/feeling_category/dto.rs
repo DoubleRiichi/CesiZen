@@ -1,6 +1,7 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
+use validator::Validate;
 use crate::modules::feeling_category::model::FeelingCategoryRow;
 
 #[derive(Serialize, Debug, ToSchema)]
@@ -23,13 +24,15 @@ impl From<(FeelingCategoryRow)> for FeelingCategoryGet {
     }
 }
 
-#[derive(Deserialize, Debug, ToSchema)]
+#[derive(Deserialize, Validate, Debug, ToSchema)]
 pub struct FeelingCategoryCreate {
+    #[validate(length(min = 4, max = 100))]
     pub name: String,
 }
 
-#[derive(Deserialize, Debug, ToSchema)]
+#[derive(Deserialize, Validate, Debug, ToSchema)]
 pub struct FeelingCategoryUpdate {
+    #[validate(length(min = 4, max = 100))]
     pub name: String,
 }
 #[derive(Deserialize, Debug, ToSchema)]
