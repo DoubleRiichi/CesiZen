@@ -1,4 +1,4 @@
-use chrono::NaiveDateTime;
+use chrono::{DateTime, Utc};
 use sqlx::FromRow;
 
 #[derive(FromRow, Debug)]
@@ -6,8 +6,8 @@ pub struct FeelingRow {
     pub id: i32,
     pub feeling_category_id: i32,
     pub name: String,
-    pub created_at: NaiveDateTime,
-    pub updated_at: NaiveDateTime,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
 }
 
 
@@ -17,6 +17,6 @@ pub struct FeelingWithCategoryRow {
     pub feeling_category_id: i32,
     pub feeling_category_name: String,
     pub name: String,
-    pub created_at: NaiveDateTime,
-    pub updated_at: NaiveDateTime,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
 }

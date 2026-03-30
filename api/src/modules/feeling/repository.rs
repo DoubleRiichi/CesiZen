@@ -15,7 +15,9 @@ impl FeelingRepository {
                 f.id,
                 f.feeling_category_id,
                 fc.name AS feeling_category_name,
-                f.name
+                f.name,
+                f.created_at,
+                f.updated_at
             FROM feeling f
             JOIN feeling_category fc
                 ON fc.id = f.feeling_category_id
@@ -41,7 +43,9 @@ impl FeelingRepository {
                 f.id,
                 f.feeling_category_id,
                 fc.name AS feeling_category_name,
-                f.name
+                f.name,
+                f.created_at,
+                f.updated_at
             FROM feeling f
             JOIN feeling_category fc
                 ON fc.id = f.feeling_category_id

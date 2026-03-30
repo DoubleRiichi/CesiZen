@@ -1,7 +1,5 @@
 use sqlx::PgPool;
 use crate::errors::app::AppError;
-use crate::modules::article::dto::ArticleSearchParams;
-use crate::modules::article::model::ArticleWithAuthorRow;
 use crate::modules::user::dto::{UserCreate, UserGet, UserSearchParams, UserUpdate};
 use crate::modules::user::model::{UserRole, UserRow};
 

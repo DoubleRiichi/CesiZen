@@ -1,4 +1,5 @@
 use std::fmt;
+use chrono::Utc;
 use serde::Deserialize;
 use utoipa::ToSchema;
 
@@ -12,8 +13,8 @@ pub struct UserRow {
     pub age: i16,
     pub avatar: String,
     pub is_active: bool,
-    pub created_at: chrono::NaiveDateTime,
-    pub updated_at: chrono::NaiveDateTime,
+    pub created_at: chrono::DateTime<Utc>,
+    pub updated_at: chrono::DateTime<Utc>,
 }
 
 #[derive(sqlx::Type, Deserialize, Debug, ToSchema)]

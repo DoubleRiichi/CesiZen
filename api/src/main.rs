@@ -1,6 +1,8 @@
 pub mod modules;
 pub mod errors;
 pub mod docs;
+pub mod auth;
+
 use axum::{
     Router,
     routing::get,
@@ -14,7 +16,7 @@ use utoipa_swagger_ui::SwaggerUi;
 use dotenv::dotenv;
 
 use crate::docs::ApiDoc;
-use crate::modules::{article, tag, user};
+use crate::modules::{article, feeling, tag, user};
 use crate::modules::article::handler::{create_article, get_article_by_id, search_article};
 
 #[derive(Clone)]
@@ -40,9 +42,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let state = AppState { db: pool };
 
     let app = Router::new()
-        .nest("/article/", article::router::router())
-        .nest("/user/", user::router::router())
-        .nest("/tag/", tag::router::router())
+        .nest("/article", article::router::router())
+        .nest("/user", user::router::router())
+        .nest("/tag", tag::router::router())
+        .nest("/feeling", feeling::router::router())
         .merge(
             SwaggerUi::new("/swagger-ui")
                 .url("/api-doc/openapi.json", ApiDoc::openapi()),

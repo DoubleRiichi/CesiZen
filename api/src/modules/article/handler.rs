@@ -10,7 +10,7 @@ use crate::modules::article::service::ArticleService;
 
 #[utoipa::path(
     get,
-    path = "/article/:id",
+    path = "/article/{id}",
     tag = "article",
     params(
         ("id" = i32, Path, description = "Article ID")
@@ -63,7 +63,7 @@ pub async fn search_article(
 
 #[utoipa::path(
     put,
-    path = "/article/:id",
+    path = "/article/{id}",
     tag = "article",
     request_body = ArticleUpdate,
 )]
@@ -81,7 +81,7 @@ pub async fn update_article(
 
 #[utoipa::path(
     delete,
-    path = "/article/:id",
+    path = "/article/{id}",
     tag = "article",
 )]
 #[debug_handler]

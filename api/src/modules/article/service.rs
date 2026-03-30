@@ -39,7 +39,7 @@ impl ArticleService {
     }
 
 
-    //TODO: ensure only logged in admins and mods can create article, and use the user tired to the jwt token
+    //TODO: ensure only logged in admins and mods can create article, and use the user tied to the jwt token
     pub async fn create(pool: &PgPool, article: ArticleCreate) -> Result<i32, AppError> {
         article.validate()?;
 

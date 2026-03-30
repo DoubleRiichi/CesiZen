@@ -1,3 +1,4 @@
+use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 use validator::Validate;
@@ -15,8 +16,8 @@ pub struct ArticleGet {
     is_deleted: bool,
     visibility: String,
     tags: Vec<String>,
-    created_at: chrono::NaiveDateTime,
-    updated_at: chrono::NaiveDateTime,
+    created_at: chrono::DateTime<Utc>,
+    updated_at: chrono::DateTime<Utc>,
 }
 
 impl From<ArticleWithAuthorRow> for ArticleGet {
@@ -69,10 +70,10 @@ pub struct ArticleSearchParams {
     pub author_id: Option<i32>,
     pub title: Option<String>,
     pub content: Option<String>,
-    pub start_date: Option<chrono::NaiveDateTime>,
-    pub end_date: Option<chrono::NaiveDateTime>,
+    pub start_date: Option<chrono::DateTime<Utc>>,
+    pub end_date: Option<chrono::DateTime<Utc>>,
     pub tag_ids: Option<Vec<i32>>,
-    pub cursor: Option<chrono::NaiveDateTime>,
+    pub cursor: Option<chrono::DateTime<Utc>>,
     pub page_size: Option<i32>,
 }
 
