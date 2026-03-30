@@ -13,6 +13,8 @@
         crate::modules::user::handler::create_user,
         crate::modules::user::handler::update_user,
         crate::modules::user::handler::delete_user,
+        crate::modules::user::handler::login,
+
         //Tags
         crate::modules::tag::handler::get_tag_by_id,
         crate::modules::tag::handler::create_tag,

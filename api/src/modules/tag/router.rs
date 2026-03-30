@@ -8,5 +8,5 @@ pub fn router() -> Router<AppState> {
         .route("/{id}", get(get_tag_by_id))
         .route("/", post(create_tag))
         .route("/all", get(all_tag))
-        .route("/", delete(delete_tag))
+        .route("/{id}", delete(delete_tag))
 }

@@ -7,7 +7,7 @@ pub struct FeelingTracker {
     pub feeling_id: i32,
     pub timestamp_start: DateTime<Utc>,
     pub timestamp_end: DateTime<Utc>,
-    pub intensity: i8, //should be between 1 and 10
+    pub intensity: i16, //should be between 1 and 10
     pub notes: String, //nullable
     pub location: String, //nullable
     pub created_at: DateTime<Utc>,
@@ -24,7 +24,7 @@ pub struct FeelingTrackerWithFeelingRow {
     pub feeling_category_name: String,
     pub timestamp_start: DateTime<Utc>,
     pub timestamp_end: DateTime<Utc>,
-    pub intensity: i8, //should be between 1 and 10
+    pub intensity: i16,
     pub notes: String, //nullable
     pub location: String, //nullable
     pub created_at: DateTime<Utc>,

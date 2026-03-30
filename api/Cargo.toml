@@ -10,7 +10,7 @@ serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.149"
 tokio = { version = "1.49.0", features = ["rt-multi-thread", "macros"] }
 thiserror = "2.0.18"
-jsonwebtoken = "10.3.0"
+jsonwebtoken = { version = "10.3.0", default-features = false, features = ["rust_crypto"] }
 chrono = { version = "0.4.44", features = ["serde"] }
 validator = { version = "0.20", features = ["derive"] }
 sqlx = {version = "0.8.6", features = ["postgres", "chrono", "runtime-tokio"]}
@@ -18,3 +18,9 @@ bcrypt = "0.19.0"
 log = "0.4.29"
 utoipa = { version = "5.4.0", features = ["axum_extras", "chrono"] }
 utoipa-swagger-ui = { version = "9.0.2", features = ["axum"] }
+tower = {version = "0.5.3", features = ["util"]}
+uuid = {version = "1.23.0", features = ["v4"]}
+
+
+[features]
+integration = []

@@ -147,7 +147,7 @@ impl FeelingTrackerRepository {
             WHERE id = $8
             "#
         )
-            .bind(id)
+            .bind(data.user_id)
             .bind(data.feeling_id)
             .bind(data.timestamp_start)
             .bind(data.timestamp_end)

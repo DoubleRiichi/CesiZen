@@ -48,13 +48,13 @@ impl FeelingCategoryRepository {
         }
 
         if let Some(end) = params.end_at {
-            qb.push(" AND a.created_at <= ");
+            qb.push(" AND created_at <= ");
             qb.push_bind(end);
         }
 
 
         if let Some(cursor) = params.cursor {
-            qb.push(" AND a.created_at < ");
+            qb.push(" AND created_at < ");
             qb.push_bind(cursor);
         }
 

@@ -12,7 +12,7 @@ pub struct FeelingTrackerGet {
     pub feeling_category: String,
     pub timestamp_start: DateTime<Utc>,
     pub timestamp_end: DateTime<Utc>,
-    pub intensity: i8,
+    pub intensity: i16,
     pub notes: String,
     pub location: String,
     pub created_at: DateTime<Utc>,
@@ -41,21 +41,20 @@ impl From<FeelingTrackerWithFeelingRow> for FeelingTrackerGet {
 pub struct FeelingTrackerCreate {
     pub user_id: i32,
     pub feeling_id: i32,
-    pub feeling_category_id: i32,
     pub timestamp_start: DateTime<Utc>,
     pub timestamp_end: DateTime<Utc>,
-    pub intensity: i8,
+    pub intensity: i16,
     pub notes: String,
     pub location: String,
 }
 
 #[derive(Deserialize, Debug, ToSchema)]
 pub struct FeelingTrackerUpdate {
+    pub user_id: i32,
     pub feeling_id: i32,
-    pub feeling_category_id: i32,
     pub timestamp_start: DateTime<Utc>,
     pub timestamp_end: DateTime<Utc>,
-    pub intensity: i8,
+    pub intensity: i16,
     pub notes: String,
     pub location: String,
 }

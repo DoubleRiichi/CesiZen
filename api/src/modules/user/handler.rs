@@ -91,3 +91,37 @@ pub async fn delete_user(
     UserService::delete(&pool.db, id)
         .await.map(Json)
 }
+
+
+use crate::auth::{claims::Claims, encode_jwt};
+use crate::modules::user::dto::{LoginRequest, LoginResponse};
+#[utoipa::path(
+    post,
+    path = "/user/login",
+    tag = "user",
+)]
+#[debug_handler]
+pub async fn login(
+    State(pool): State<AppState>,
+    Json(body): Json<LoginRequest>,
+) -> Result<Json<LoginResponse>, AppError> {
+
+    let user_row = UserRepository::by_mail(&pool.db, &body.email)
+        .await
+        .map_err(|_| AppError::Validation("Invalid email or password".to_string()))?;
+
+    let valid = bcrypt::verify(&body.password, &user_row.password)
+        .map_err(|_| AppError::Internal("Password verification failed".to_string()))?;
+
+    if !valid {
+        return Err(AppError::Validation("Invalid email or password".to_string()));
+    }
+
+    let claims = Claims::new(user_row.id, user_row.email.clone(), user_row.role.clone());
+    let token = encode_jwt(&claims)?;
+
+    Ok(Json(LoginResponse {
+        token,
+        user: user_row.into(),
+    }))
+}

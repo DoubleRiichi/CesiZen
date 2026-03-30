@@ -10,5 +10,5 @@ pub fn router() -> Router<AppState> {
         .route("/{id}", get(get_article_by_id))
         .route("/", post(create_article))
         .route("/search", post(search_article))
-        .route("/", delete(delete_article))
+        .route("/{id}", delete(delete_article))
 }
