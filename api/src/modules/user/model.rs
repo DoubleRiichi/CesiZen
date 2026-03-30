@@ -1,6 +1,6 @@
 use std::fmt;
 use chrono::Utc;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
 #[derive(sqlx::FromRow)]
@@ -17,7 +17,7 @@ pub struct UserRow {
     pub updated_at: chrono::DateTime<Utc>,
 }
 
-#[derive(sqlx::Type, Deserialize, Debug, ToSchema)]
+#[derive(sqlx::Type, Serialize, Deserialize, Debug, ToSchema, Clone)]
 #[sqlx(type_name = "user_role", rename_all = "PascalCase")]
 pub enum UserRole {
     Admin,

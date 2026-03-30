@@ -8,5 +8,5 @@ pub fn router() -> Router<AppState> {
         .route("/{id}", get(get_feeling_by_id))
         .route("/", post(create_feeling))
         .route("/search", post(search_feeling))
-        .route("/", delete(delete_feeling))
+        .route("/{id}", delete(delete_feeling))
 }

@@ -7,17 +7,17 @@ use crate::modules::tag::dto::TagGet;
 use crate::modules::tag::model::TagRow;
 use crate::modules::user::dto::UserGetSimple;
 
-#[derive(Serialize, ToSchema)]
+#[derive(Serialize, ToSchema, Debug)]
 pub struct ArticleGet {
-    id: i32,
-    author: UserGetSimple,
-    title: String,
-    content: String,
-    is_deleted: bool,
-    visibility: String,
-    tags: Vec<String>,
-    created_at: chrono::DateTime<Utc>,
-    updated_at: chrono::DateTime<Utc>,
+    pub id: i32,
+    pub author: UserGetSimple,
+    pub title: String,
+    pub content: String,
+    pub is_deleted: bool,
+    pub visibility: String,
+    pub tags: Vec<String>,
+    pub created_at: chrono::DateTime<Utc>,
+    pub updated_at: chrono::DateTime<Utc>,
 }
 
 impl From<ArticleWithAuthorRow> for ArticleGet {

@@ -27,7 +27,7 @@ impl UserRepository {
     }
 
     pub async fn by_id(pool: &PgPool, id: i32) -> Result<UserRow, sqlx::Error> {
-        let user = sqlx::query_as::<_, UserRow>(r#"SELECT * FROM "user" WHERE email = $1"#)
+        let user = sqlx::query_as::<_, UserRow>(r#"SELECT * FROM "user" WHERE id = $1"#)
             .bind(id)
             .fetch_one(pool)
             .await?;
@@ -35,17 +35,19 @@ impl UserRepository {
         Ok(user)
     }
 
+    // ✅ Après
     pub async fn create(pool: &PgPool, user: UserCreate, role: &UserRole, hashed: &str) -> Result<UserRow, sqlx::Error> {
         let user = sqlx::query_as::<_, UserRow>(
             r#"INSERT INTO "user"
-            (username, email, password, role, age, avatar, is_active, created_at, updated_at)
-            VALUES ($1, $2, $3::user_role, $4, $5, $6, false, NOW(), NOW())
-            RETURNING *"#)
-            .bind(user.username)
-            .bind(user.email)
-            .bind(user.password)
-            .bind(role)
-            .bind(user.age)
+        (username, email, password, role, age, avatar, is_active, created_at, updated_at)
+        VALUES ($1, $2, $3, $4::user_role, $5, $6, false, NOW(), NOW())
+        RETURNING *"#)
+            .bind(user.username)  // $1 username
+            .bind(user.email)     // $2 email
+            .bind(hashed)         // $3 password hashé ✅
+            .bind(role)           // $4 role
+            .bind(user.age)       // $5 age
+            .bind(user.avatar)    // $6 avatar ✅
             .fetch_one(pool)
             .await?;
 
@@ -64,7 +66,6 @@ impl UserRepository {
             RETURNING *"#
         )
             .bind(user.email)
-            .bind(user.password)
             .bind(hashed)
             .bind(user.is_active)
             .bind(user.avatar)
@@ -113,17 +114,11 @@ impl UserRepository {
         page_size: i32,
     ) -> Result<Vec<UserRow>, AppError> {
         let mut qb = sqlx::QueryBuilder::new(
-            r#"
-            SELECT
-                *
-            FROM "user"
-            WHERE 1=1
-        "#,
+            r#"SELECT * FROM "user" WHERE 1=1"#,
         );
 
-        // Dynamic filters
         if let Some(username) = params.username {
-            qb.push(" AND username ILIKE  ");
+            qb.push(" AND username ILIKE ");
             qb.push_bind(format!("%{}%", username));
         }
 
@@ -137,24 +132,9 @@ impl UserRepository {
             qb.push_bind(avatar);
         }
 
-        if let Some(start) = params.start_at {
-            qb.push(" AND created_at >= ");
-            qb.push_bind(start);
-        }
-
-        if let Some(end) = params.end_at {
-            qb.push(" AND a.created_at <= ");
-            qb.push_bind(end);
-        }
-
         if let Some(age) = params.age {
             qb.push(" AND age >= ");
             qb.push_bind(age);
-        }
-
-        if let Some(cursor) = params.cursor {
-            qb.push(" AND a.created_at < ");
-            qb.push_bind(cursor);
         }
 
         if let Some(is_active) = params.is_active {
@@ -167,13 +147,25 @@ impl UserRepository {
             qb.push_bind(role);
         }
 
-        // Final clauses (GROUP BY must come AFTER WHERE)
-        qb.push(" GROUP BY id ORDER BY created_at DESC LIMIT ");
+        if let Some(start) = params.start_at {
+            qb.push(" AND created_at >= ");  // ✅ pas de préfixe "a."
+            qb.push_bind(start);
+        }
+
+        if let Some(end) = params.end_at {
+            qb.push(" AND created_at <= ");  // ✅ corrigé
+            qb.push_bind(end);
+        }
+
+        if let Some(cursor) = params.cursor {
+            qb.push(" AND created_at < ");   // ✅ corrigé
+            qb.push_bind(cursor);
+        }
+
+        qb.push(" ORDER BY created_at DESC LIMIT ");  // ✅ GROUP BY supprimé
         qb.push_bind(page_size);
 
         let query = qb.build_query_as::<UserRow>();
-        let users = query.fetch_all(pool).await?;
-
-        Ok(users)
+        Ok(query.fetch_all(pool).await?)
     }
 }

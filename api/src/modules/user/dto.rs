@@ -95,3 +95,15 @@ pub struct UserSearchParams {
     pub cursor: Option<chrono::DateTime<Utc>>,
     pub page_size: Option<i32>,
 }
+
+#[derive(Deserialize, Debug, ToSchema)]
+pub struct LoginRequest {
+    pub email: String,
+    pub password: String,
+}
+
+#[derive(Serialize, Debug, ToSchema)]
+pub struct LoginResponse {
+    pub token: String,
+    pub user: UserGet,
+}

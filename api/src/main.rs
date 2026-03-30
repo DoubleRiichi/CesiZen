@@ -2,6 +2,8 @@ pub mod modules;
 pub mod errors;
 pub mod docs;
 pub mod auth;
+#[cfg(test)]
+mod tests;
 
 use axum::{
     Router,
