@@ -44,7 +44,7 @@ impl FeelingCategoryService {
         let feeling_category_created = FeelingCategoryRepository::create(pool, feeling_category)
             .await?;
 
-        Ok(feeling_category_created.into())
+        Ok(feeling_category_created)
     }
 
     pub async fn update(pool: &PgPool, feeling_category_id: i32, feeling_category: FeelingCategoryUpdate) -> Result<(), AppError> {
@@ -58,9 +58,9 @@ impl FeelingCategoryService {
 
     pub async fn delete(pool: &PgPool, feeling_category_id: i32) -> Result<(), AppError> {
 
-        let result = FeelingCategoryRepository::delete(pool, feeling_category_id)
+        FeelingCategoryRepository::delete(pool, feeling_category_id)
             .await?;
 
-        Ok(result)
+        Ok(())
     }
 }

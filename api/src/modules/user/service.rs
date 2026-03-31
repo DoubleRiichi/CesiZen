@@ -26,16 +26,16 @@ impl UserService {
     }
 
     pub async fn delete(pool: &PgPool, id: i32) -> Result<(), AppError> {
-        let result = UserRepository::delete(pool, id)
+        UserRepository::delete(pool, id)
             .await?;
 
-        Ok(result)
+        Ok(())
     }
 
     pub async fn create(pool: &PgPool, user: UserCreate) -> Result<UserGet, AppError> {
         user.validate()?;
 
-        let hashed = self::hash(&*user.password)?;
+        let hashed = self::hash(&user.password)?;
 
         let user_row = UserRepository::create(pool, user, &UserRole::User, &hashed)
             .await
@@ -47,7 +47,7 @@ impl UserService {
     pub async fn update(pool: &PgPool, id: i32, user: UserUpdate) -> Result<UserGet, AppError> {
         user.validate()?;
 
-        let hashed = self::hash(&*user.password)?;
+        let hashed = self::hash(&user.password)?;
 
         let user_row = UserRepository::update(pool, id, user, &hashed)
             .await

@@ -45,7 +45,7 @@ impl FeelingService {
         let created_feeling = FeelingRepository::create(pool, feeling)
             .await?;
 
-        Ok(created_feeling.into())
+        Ok(created_feeling)
     }
 
     pub async fn update(pool: &PgPool, feeling_id: i32, feeling: FeelingUpdate) -> Result<(), AppError> {
@@ -59,9 +59,9 @@ impl FeelingService {
 
     pub async fn delete(pool: &PgPool, feeling_id: i32) -> Result<(), AppError> {
 
-        let result = FeelingRepository::delete(pool, feeling_id)
+        FeelingRepository::delete(pool, feeling_id)
             .await?;
 
-        Ok(result)
+        Ok(())
     }
 }

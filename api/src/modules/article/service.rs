@@ -45,7 +45,7 @@ impl ArticleService {
         let created_article = ArticleRepository::create(pool, article)
           .await?;
 
-        Ok(created_article.into())
+        Ok(created_article)
     }
 
     pub async fn update(pool: &PgPool, article_id: i32, article: ArticleUpdate) -> Result<(), AppError> {
@@ -59,9 +59,9 @@ impl ArticleService {
 
     pub async fn delete(pool: &PgPool, article_id: i32) -> Result<(), AppError> {
 
-        let result = ArticleRepository::delete(pool, article_id)
+         ArticleRepository::delete(pool, article_id)
             .await?;
 
-        Ok(result)
+        Ok(())
     }
 }
