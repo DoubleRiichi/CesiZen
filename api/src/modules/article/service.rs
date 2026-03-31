@@ -1,9 +1,8 @@
-use sqlx::PgPool;
-use validator::Validate;
 use crate::errors::app::AppError;
 use crate::modules::article::dto::{ArticleCreate, ArticleGet, ArticleSearchParams, ArticleUpdate};
 use crate::modules::article::repository::ArticleRepository;
-use crate::modules::tag::repository::TagRepository;
+use sqlx::PgPool;
+use validator::Validate;
 
 pub struct ArticleService;
 

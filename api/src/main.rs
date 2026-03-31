@@ -5,23 +5,11 @@ pub mod auth;
 #[cfg(test)]
 mod tests;
 
-use sqlx::{PgPool, postgres::PgPoolOptions};
-use std::env;
-use axum::routing::post;
-use tokio::net::TcpListener;
-use utoipa::OpenApi;
-use utoipa_swagger_ui::SwaggerUi;
 use dotenv::dotenv;
+use sqlx::{postgres::PgPoolOptions, PgPool};
+use std::env;
+use tokio::net::TcpListener;
 
-use axum::{
-    Router,
-    routing::get,
-};
-
-
-
-use crate::docs::ApiDoc;
-use crate::modules::{article, feeling, feeling_category, feeling_tracker, tag, user};
 pub fn build_app(pool: sqlx::PgPool) -> axum::Router {
     use crate::modules::{article, feeling, feeling_category, feeling_tracker, tag, user};
     use utoipa::OpenApi;
@@ -45,7 +33,7 @@ pub fn build_app(pool: sqlx::PgPool) -> axum::Router {
 }
 
 #[derive(Clone)]
-struct AppState {
+pub struct AppState {
     db: PgPool,
 }
 

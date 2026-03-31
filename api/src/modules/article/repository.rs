@@ -1,11 +1,7 @@
-use std::fmt;
-use crate::modules::article::model::ArticleVisibility;
-use sqlx::PgPool;
-use log::debug;
 use crate::errors::app::AppError;
 use crate::modules::article::dto::{ArticleCreate, ArticleSearchParams, ArticleUpdate};
 use crate::modules::article::model::ArticleWithAuthorRow;
-use crate::modules::user::model::UserRow;
+use sqlx::PgPool;
 
 pub struct ArticleRepository;
 

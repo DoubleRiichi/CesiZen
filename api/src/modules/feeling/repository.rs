@@ -1,7 +1,7 @@
-use sqlx::{PgPool, QueryBuilder};
 use crate::errors::app::AppError;
 use crate::modules::feeling::dto::{FeelingCreate, FeelingSearchParams, FeelingUpdate};
-use crate::modules::feeling::model::{FeelingWithCategoryRow};
+use crate::modules::feeling::model::FeelingWithCategoryRow;
+use sqlx::{PgPool, QueryBuilder};
 
 pub struct FeelingRepository;
 

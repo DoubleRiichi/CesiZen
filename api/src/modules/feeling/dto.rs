@@ -1,10 +1,9 @@
+use crate::modules::feeling::model::FeelingWithCategoryRow;
+use crate::modules::feeling_category::dto::FeelingCategoryGet;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 use validator::Validate;
-use crate::modules::feeling::model::{FeelingRow, FeelingWithCategoryRow};
-use crate::modules::feeling_category::dto::FeelingCategoryGet;
-use crate::modules::user::model::UserRow;
 
 #[derive(Serialize, Debug, ToSchema)]
 pub struct FeelingGet {
@@ -15,7 +14,7 @@ pub struct FeelingGet {
     pub updated_at: DateTime<Utc>,
 }
 
-impl From<(FeelingWithCategoryRow)> for FeelingGet {
+impl From<FeelingWithCategoryRow > for FeelingGet {
     fn from(row: FeelingWithCategoryRow) -> Self {
         Self {
             id: row.id,

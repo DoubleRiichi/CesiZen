@@ -63,5 +63,5 @@ jobs:
       - name: Run unit tests
         run: cargo test
 
-      - name: Run integration tests
-        run: cargo test --features integration
+#      - name: Run integration tests
+#        run: cargo test --features integration

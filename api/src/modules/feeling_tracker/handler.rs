@@ -1,14 +1,9 @@
-use std::result;
-use axum::extract::{Path, State};
-use axum::http::StatusCode;
-use axum::{debug_handler, Json};
-use sqlx::PgPool;
-use crate::AppState;
 use crate::errors::app::AppError;
-use crate::modules::feeling::service::FeelingService;
-use crate::modules::feeling_tracker::repository::FeelingTrackerRepository;
 use crate::modules::feeling_tracker::dto::{FeelingTrackerCreate, FeelingTrackerGet, FeelingTrackerSearchParams};
 use crate::modules::feeling_tracker::service::FeelingTrackerService;
+use crate::AppState;
+use axum::extract::{Path, State};
+use axum::{debug_handler, Json};
 
 #[utoipa::path(
     get,

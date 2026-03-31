@@ -1,5 +1,5 @@
-use sqlx::{PgPool, QueryBuilder};
 use crate::errors::app::AppError;
+use sqlx::{PgPool, QueryBuilder};
 
 use crate::modules::feeling_category::dto::{FeelingCategoryCreate, FeelingCategorySearchParams, FeelingCategoryUpdate};
 use crate::modules::feeling_category::model::FeelingCategoryRow;

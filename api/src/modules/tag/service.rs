@@ -1,9 +1,7 @@
-use axum::extract::Path;
-use sqlx::PgPool;
-use utoipa::openapi::Paths;
 use crate::errors::app::AppError;
 use crate::modules::tag::dto::{TagCreate, TagGet};
 use crate::modules::tag::repository::TagRepository;
+use sqlx::PgPool;
 
 pub struct TagService;
 

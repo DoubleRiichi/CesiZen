@@ -1,9 +1,9 @@
-use std::option::Option;
+use crate::modules::user::model::*;
 use chrono::Utc;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
+use std::option::Option;
 use utoipa::ToSchema;
 use validator::Validate;
-use crate::modules::user::model::*;
 
 #[derive(Serialize, Debug, ToSchema)]
 pub struct UserGet {
@@ -18,7 +18,7 @@ pub struct UserGet {
     pub updated_at: chrono::DateTime<Utc>,
 }
 
-impl From<(UserRow)> for UserGet {
+impl From<UserRow> for UserGet {
     fn from(user: UserRow) -> Self {
         Self {
             id: user.id,
@@ -44,7 +44,7 @@ pub struct UserGetSimple {
 }
 
 impl From<UserRow> for UserGetSimple {
-    fn from(user: (UserRow)) -> Self {
+    fn from(user: UserRow ) -> Self {
         Self {
             id: user.id,
             username: user.username,

@@ -1,12 +1,8 @@
-
+use crate::errors::app::AppError;
+use crate::modules::feeling_category::dto::{FeelingCategoryCreate, FeelingCategoryGet, FeelingCategorySearchParams, FeelingCategoryUpdate};
+use crate::modules::feeling_category::repository::FeelingCategoryRepository;
 use sqlx::PgPool;
 use validator::Validate;
-use crate::errors::app::AppError;
-use crate::modules::feeling::dto::FeelingSearchParams;
-use crate::modules::feeling::repository::FeelingRepository;
-use crate::modules::feeling_category::dto::{FeelingCategoryGet, FeelingCategoryCreate, FeelingCategoryUpdate, FeelingCategorySearchParams};
-use crate::modules::feeling_category::repository::FeelingCategoryRepository;
-use crate::modules::tag::repository::TagRepository;
 
 pub struct FeelingCategoryService;
 

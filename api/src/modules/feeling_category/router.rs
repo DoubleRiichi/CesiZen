@@ -1,7 +1,7 @@
-use axum::Router;
-use axum::routing::{delete, get, post};
-use crate::AppState;
 use crate::modules::feeling_category::handler::{create_feeling_category, delete_feeling_category, get_feeling_category_by_id, search_feeling_category};
+use crate::AppState;
+use axum::routing::{delete, get, post};
+use axum::Router;
 
 pub fn router() -> Router<AppState> {
     Router::new()

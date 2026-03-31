@@ -36,10 +36,10 @@ mod unit {
 #[cfg(test)]
 #[cfg(feature = "integration")]
 mod integration {
-    use sqlx::PgPool;
+    use crate::errors::app::AppError;
     use crate::modules::tag::dto::TagCreate;
     use crate::modules::tag::service::TagService;
-    use crate::errors::app::AppError;
+    use sqlx::PgPool;
 
     async fn get_test_pool() -> PgPool {
         let url = std::env::var("DATABASE_TEST_URL").unwrap();

@@ -1,10 +1,8 @@
-
-use sqlx::PgPool;
-use validator::Validate;
 use crate::errors::app::AppError;
 use crate::modules::feeling::dto::{FeelingCreate, FeelingGet, FeelingSearchParams, FeelingUpdate};
 use crate::modules::feeling::repository::FeelingRepository;
-use crate::modules::tag::repository::TagRepository;
+use sqlx::PgPool;
+use validator::Validate;
 
 pub struct FeelingService;
 

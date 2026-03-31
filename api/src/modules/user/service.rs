@@ -1,17 +1,16 @@
-use sqlx::PgPool;
-use validator::Validate;
 use crate::errors::app::AppError;
 use crate::modules::user::dto::{UserCreate, UserGet, UserSearchParams, UserUpdate};
-use crate::modules::user::model::{UserRole, UserRow};
-use crate::modules::user::model::UserRole::User;
+use crate::modules::user::model::UserRole;
 use crate::modules::user::repository::UserRepository;
+use sqlx::PgPool;
+use validator::Validate;
 
 pub struct UserService;
 
 
 fn hash(plain_password: &str) -> Result<String, AppError> {
     let hashed = bcrypt::hash(plain_password, bcrypt::DEFAULT_COST)
-        .map_err(|e| AppError::Internal("Error during user creation".to_string()))?;
+        .map_err(|_| AppError::Internal("Error during user creation".to_string()))?;
 
     Ok(hashed)
 }
@@ -40,7 +39,7 @@ impl UserService {
 
         let user_row = UserRepository::create(pool, user, &UserRole::User, &hashed)
             .await
-            .map_err(|e| AppError::Internal("Error creating user".to_string()))?;
+            .map_err(|_| AppError::Internal("Error creating user".to_string()))?;
 
         Ok(user_row.into())
     }
@@ -52,7 +51,7 @@ impl UserService {
 
         let user_row = UserRepository::update(pool, id, user, &hashed)
             .await
-            .map_err(|e| AppError::Internal("Error updating user".to_string()))?;
+            .map_err(|_| AppError::Internal("Error updating user".to_string()))?;
 
         Ok(user_row.into())
     }
@@ -62,7 +61,7 @@ impl UserService {
 
         let user_row = UserRepository::change_role(pool, id, &role)
             .await
-            .map_err(|e| AppError::Internal("Error updating user role".to_string()))?;
+            .map_err(|_| AppError::Internal("Error updating user role".to_string()))?;
 
         Ok(user_row.into())
     }

@@ -1,16 +1,9 @@
-use std::result;
-use axum::extract::{Path, State};
-use axum::http::StatusCode;
-use axum::{debug_handler, Json};
-use serde::__private228::de::TagOrContentField::Tag;
-use sqlx::PgPool;
-use crate::AppState;
 use crate::errors::app::AppError;
-use crate::modules::article::dto::{ArticleCreate, ArticleGet, ArticleSearchParams, ArticleUpdate};
-use crate::modules::article::service::ArticleService;
 use crate::modules::tag::dto::{TagCreate, TagGet};
-use crate::modules::tag::model::TagRow;
 use crate::modules::tag::service::TagService;
+use crate::AppState;
+use axum::extract::{Path, State};
+use axum::{debug_handler, Json};
 
 #[utoipa::path(
     get,

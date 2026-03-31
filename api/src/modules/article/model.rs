@@ -1,8 +1,7 @@
-use std::fmt;
+use crate::modules::user::model::UserRole;
 use chrono::Utc;
 use serde::Deserialize;
-use crate::modules::tag::model::TagRow;
-use crate::modules::user::model::UserRole;
+use std::fmt;
 
 #[derive(sqlx::FromRow)]
 pub struct ArticleRow {

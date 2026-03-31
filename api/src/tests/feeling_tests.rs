@@ -43,9 +43,9 @@ mod feeling_category_unit {
 #[cfg(test)]
 #[cfg(feature = "integration")]
 mod feeling_category_integration {
-    use sqlx::PgPool;
     use crate::modules::feeling_category::dto::{FeelingCategoryCreate, FeelingCategorySearchParams, FeelingCategoryUpdate};
     use crate::modules::feeling_category::repository::FeelingCategoryRepository;
+    use sqlx::PgPool;
 
     async fn get_test_pool() -> PgPool {
         let url = std::env::var("DATABASE_TEST_URL").unwrap();
@@ -142,7 +142,7 @@ mod feeling_category_integration {
 
 #[cfg(test)]
 mod feeling_unit {
-    use crate::modules::feeling::dto::{FeelingCreate, FeelingUpdate, FeelingSearchParams};
+    use crate::modules::feeling::dto::{FeelingCreate, FeelingSearchParams, FeelingUpdate};
 
     #[test]
     fn feeling_create_deserializes() {
@@ -181,11 +181,11 @@ mod feeling_unit {
 #[cfg(test)]
 #[cfg(feature = "integration")]
 mod feeling_integration {
-    use sqlx::PgPool;
     use crate::modules::feeling::dto::{FeelingCreate, FeelingSearchParams, FeelingUpdate};
     use crate::modules::feeling::repository::FeelingRepository;
     use crate::modules::feeling_category::dto::FeelingCategoryCreate;
     use crate::modules::feeling_category::repository::FeelingCategoryRepository;
+    use sqlx::PgPool;
 
     async fn get_test_pool() -> PgPool {
         let url = std::env::var("DATABASE_TEST_URL").unwrap();

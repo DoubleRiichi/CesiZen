@@ -1,11 +1,11 @@
-use axum::{
-    extract::FromRequestParts,
-    http::request::Parts,
-};
 use crate::auth::claims::Claims;
 use crate::errors::app::AppError;
 use crate::modules::user::model::UserRole;
 use crate::AppState;
+use axum::{
+    extract::FromRequestParts,
+    http::request::Parts,
+};
 
 /// Guard : requiert le rôle Admin
 pub struct RequireAdmin(pub Claims);

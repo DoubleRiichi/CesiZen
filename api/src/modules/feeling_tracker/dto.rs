@@ -1,9 +1,8 @@
+use crate::modules::feeling_tracker::model::FeelingTrackerWithFeelingRow;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 use validator::Validate;
-use crate::modules::feeling::dto::FeelingGet;
-use crate::modules::feeling_tracker::model::{ FeelingTrackerWithFeelingRow};
 
 #[derive(Serialize, Debug, ToSchema)]
 pub struct FeelingTrackerGet {

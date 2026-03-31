@@ -1,8 +1,7 @@
-use axum::Router;
-use axum::routing::{delete, get, post};
-use crate::AppState;
 use crate::modules::article::handler::{create_article, delete_article, get_article_by_id, search_article};
-
+use crate::AppState;
+use axum::routing::{delete, get, post};
+use axum::Router;
 
 
 pub fn router() -> Router<AppState> {

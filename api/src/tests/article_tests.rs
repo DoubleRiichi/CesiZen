@@ -4,8 +4,8 @@
 
 #[cfg(test)]
 mod unit {
-    use validator::Validate;
     use crate::modules::article::dto::{ArticleCreate, ArticleUpdate};
+    use validator::Validate;
 
     fn valid_article_create() -> ArticleCreate {
         ArticleCreate {
@@ -110,10 +110,10 @@ mod unit {
 #[cfg(test)]
 #[cfg(feature = "integration")]
 mod integration {
-    use sqlx::PgPool;
+    use crate::errors::app::AppError;
     use crate::modules::article::dto::{ArticleCreate, ArticleSearchParams, ArticleUpdate};
     use crate::modules::article::service::ArticleService;
-    use crate::errors::app::AppError;
+    use sqlx::PgPool;
 
     async fn get_test_pool() -> PgPool {
         let url = std::env::var("DATABASE_TEST_URL").unwrap();

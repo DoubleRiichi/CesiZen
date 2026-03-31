@@ -1,10 +1,10 @@
-use axum::{
-    extract::FromRequestParts,
-    http::{request::Parts, header},
-};
 use crate::auth::{claims::Claims, decode_jwt};
 use crate::errors::app::AppError;
 use crate::AppState;
+use axum::{
+    extract::FromRequestParts,
+    http::{header, request::Parts},
+};
 
 impl FromRequestParts<AppState> for Claims {
     type Rejection = AppError;

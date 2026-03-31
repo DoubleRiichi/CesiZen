@@ -1,7 +1,7 @@
-use sqlx::PgPool;
 use crate::errors::app::AppError;
-use crate::modules::user::dto::{UserCreate, UserGet, UserSearchParams, UserUpdate};
+use crate::modules::user::dto::{UserCreate, UserSearchParams, UserUpdate};
 use crate::modules::user::model::{UserRole, UserRow};
+use sqlx::PgPool;
 
 pub struct UserRepository;
 
@@ -96,7 +96,7 @@ impl UserRepository {
     }
 
     pub async fn delete(pool: &PgPool, id: i32) -> Result<(), AppError> {
-        let result = sqlx::query(
+        let _result = sqlx::query(
             r#"DELETE FROM "user" WHERE id = $1"#
             // id
         ).bind(id)

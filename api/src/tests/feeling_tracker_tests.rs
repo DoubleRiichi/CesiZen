@@ -4,8 +4,8 @@
 
 #[cfg(test)]
 mod unit {
-    use validator::Validate;
     use crate::modules::user::dto::{UserCreate, UserUpdate};
+    use validator::Validate;
 
     fn valid_user_create() -> UserCreate {
         UserCreate {
@@ -110,10 +110,10 @@ mod unit {
 #[cfg(test)]
 #[cfg(feature = "integration")]
 mod integration {
-    use sqlx::PgPool;
+    use crate::errors::app::AppError;
     use crate::modules::user::dto::{UserCreate, UserSearchParams};
     use crate::modules::user::service::UserService;
-    use crate::errors::app::AppError;
+    use sqlx::PgPool;
 
     async fn get_test_pool() -> PgPool {
         let url = std::env::var("DATABASE_TEST_URL")
@@ -195,10 +195,10 @@ mod integration {
 #[cfg(test)]
 #[cfg(feature = "integration")]
 mod http {
+    use crate::tests::integration_tests::helpers::build_test_app;
     use axum::{body::Body, http::{Request, StatusCode}, Router};
     use serde_json::json;
     use tower::ServiceExt;
-    use crate::tests::integration_tests::helpers::build_test_app;
 
     #[tokio::test]
     async fn post_user_returns_ok() {

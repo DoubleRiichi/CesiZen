@@ -23,10 +23,10 @@ pub mod helpers {
 #[cfg(test)]
 #[cfg(feature = "integration")]
 mod e2e {
+    use super::helpers::build_test_app;
     use axum::{body::Body, http::{Request, StatusCode}, Router};
     use serde_json::{json, Value};
     use tower::ServiceExt;
-    use super::helpers::build_test_app;
 
     async fn body_json(response: axum::response::Response) -> Value {
         let bytes = axum::body::to_bytes(response.into_body(), usize::MAX)

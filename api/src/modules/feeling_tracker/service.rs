@@ -1,8 +1,8 @@
-use sqlx::PgPool;
-use validator::Validate;
 use crate::errors::app::AppError;
 use crate::modules::feeling_tracker::dto::{FeelingTrackerCreate, FeelingTrackerGet, FeelingTrackerSearchParams, FeelingTrackerUpdate};
 use crate::modules::feeling_tracker::repository::FeelingTrackerRepository;
+use sqlx::PgPool;
+use validator::Validate;
 
 pub struct FeelingTrackerService {}
 

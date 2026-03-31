@@ -1,7 +1,7 @@
-use axum::Router;
-use axum::routing::{delete, get, post};
-use crate::AppState;
 use crate::modules::user::handler::{create_user, delete_user, get_user_by_id, login, search_user};
+use crate::AppState;
+use axum::routing::{delete, get, post};
+use axum::Router;
 
 pub fn router() -> Router<AppState> {
     Router::new()
