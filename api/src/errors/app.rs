@@ -21,6 +21,12 @@ pub enum AppError {
 
     #[error("Conflict on {0}")]
     Conflict(String),
+
+    #[error("Forbidden : {0}")]
+    Forbidden(String),
+
+    #[error("Unauthorized")]
+    Unauthorized,
 }
 
 impl From<validator::ValidationErrors> for AppError {
@@ -51,6 +57,8 @@ impl IntoResponse for AppError {
             AppError::Validation(e) => (StatusCode::BAD_REQUEST, e),
             AppError::Internal(e) => (StatusCode::INTERNAL_SERVER_ERROR, e),
             AppError::Conflict(e) => (StatusCode::CONFLICT, e),
+            AppError::Forbidden(e)  => (StatusCode::FORBIDDEN, e), 
+            AppError::Unauthorized  => (StatusCode::UNAUTHORIZED, "Unauthorized".to_string()),
 
         };
 

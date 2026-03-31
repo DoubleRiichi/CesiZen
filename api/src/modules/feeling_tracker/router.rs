@@ -1,6 +1,6 @@
-use crate::modules::feeling_tracker::handler::{create_feeling_tracker, delete_feeling_tracker, get_feeling_tracker_by_id, search_feeling_tracker};
+use crate::modules::feeling_tracker::handler::{create_feeling_tracker, delete_feeling_tracker, get_feeling_tracker_by_id, search_feeling_tracker, update_feeling_tracker};
 use crate::AppState;
-use axum::routing::{delete, get, post};
+use axum::routing::{delete, get, post, put};
 use axum::Router;
 
 pub fn router() -> Router<AppState> {
@@ -8,5 +8,6 @@ pub fn router() -> Router<AppState> {
         .route("/{id}", get(get_feeling_tracker_by_id))
         .route("/", post(create_feeling_tracker))
         .route("/search", post(search_feeling_tracker))
+        .route("/{id}", put(update_feeling_tracker))
         .route("/{id}", delete(delete_feeling_tracker))
 }

@@ -44,6 +44,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let db_url = env::var("DATABASE_URL")
         .expect("DATABASE_URL must be set in .env");
 
+    println!("Attempting to reach the database...");
+
     let pool = PgPoolOptions::new()
         .max_connections(5)
         .connect(&db_url)

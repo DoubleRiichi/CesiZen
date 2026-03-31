@@ -40,6 +40,7 @@ impl FeelingTrackerRepository {
 
     pub async fn search(
         pool: &PgPool,
+        user_id: i32,
         params: FeelingTrackerSearchParams,
         page_size: i32,
     ) -> Result<Vec<FeelingTrackerWithFeelingRow>, AppError> {
@@ -67,10 +68,10 @@ impl FeelingTrackerRepository {
             "#
         );
 
-        if let Some(user_id) = params.user_id {
-            qb.push(" AND ft.user_id = ");
-            qb.push_bind(user_id);
-        }
+
+        qb.push(" AND ft.user_id = ");
+        qb.push_bind(user_id);
+
 
         if let Some(feeling_id) = params.feeling_id {
             qb.push(" AND ft.feeling_id = ");
@@ -137,7 +138,6 @@ impl FeelingTrackerRepository {
             r#"
             UPDATE feeling_tracker
             SET
-                user_id = $1,
                 feeling_id = $2,
                 timestamp_start = $3,
                 timestamp_end = $4,
@@ -147,7 +147,6 @@ impl FeelingTrackerRepository {
             WHERE id = $8
             "#
         )
-            .bind(data.user_id)
             .bind(data.feeling_id)
             .bind(data.timestamp_start)
             .bind(data.timestamp_end)

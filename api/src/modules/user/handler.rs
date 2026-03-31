@@ -1,5 +1,4 @@
 use crate::errors::app::AppError;
-use crate::modules::article::dto::ArticleUpdate;
 use crate::modules::user::dto::{UserCreate, UserGet, UserSearchParams, UserUpdate};
 use crate::modules::user::repository::UserRepository;
 use crate::modules::user::service::UserService;
@@ -13,10 +12,15 @@ use axum::{debug_handler, Json};
     tag = "user",
 )]
 pub async fn get_user_by_id(
+    RequireAuth(claims): RequireAuth,
     State(pool): State<AppState>,
     Path(id): Path<i32>,
 ) -> Result<Json<UserGet>, AppError> {
-    UserService::by_id(&pool.db, id).await.map(Json)
+    let result = UserService::by_id(&pool.db, id).await?;
+
+    assert_owns_resource(&claims, result.id)?;
+
+    Ok(Json(result))
 }
 
 
@@ -39,6 +43,8 @@ pub async fn create_user(
 }
 
 
+
+
 #[utoipa::path(
     post,
     path = "/user/search",
@@ -47,6 +53,7 @@ pub async fn create_user(
 )]
 #[debug_handler]
 pub async fn search_user(
+    RequireAdmin(_claims): RequireAdmin,
     State(pool): State<AppState>,
     Json(body): Json<UserSearchParams>
 ) -> Result<Json<Vec<UserGet>>, AppError> {
@@ -59,14 +66,17 @@ pub async fn search_user(
     put,
     path = "/user/{id}",
     tag = "user",
-    request_body = ArticleUpdate,
+    request_body = UserUpdate,
 )]
 #[debug_handler]
 pub async fn update_user(
+    RequireAuth(claims): RequireAuth,
     State(pool): State<AppState>,
     Path(id): Path<i32>,
     Json(body): Json<UserUpdate>
 ) -> Result<Json<UserGet>, AppError> {
+
+    assert_owns_resource(&claims, id)?;
 
     UserService::update(&pool.db, id, body)
         .await.map(Json)
@@ -80,6 +90,7 @@ pub async fn update_user(
 )]
 #[debug_handler]
 pub async fn delete_user(
+    RequireAdmin(_claims): RequireAdmin,
     State(pool): State<AppState>,
     Path(id): Path<i32>,
 ) -> Result<Json<()>, AppError> {
@@ -89,6 +100,7 @@ pub async fn delete_user(
 }
 
 
+use crate::auth::guards::{assert_owns_resource, RequireAdmin, RequireAuth};
 use crate::auth::{claims::Claims, encode_jwt};
 use crate::modules::user::dto::{LoginRequest, LoginResponse};
 #[utoipa::path(

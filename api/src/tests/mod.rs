@@ -6,5 +6,3 @@ pub mod feeling_tracker_tests;
 pub mod integration_tests;
 pub mod auth_tests;
 
-use crate::AppState;
-use crate::modules::{feeling, feeling_category, feeling_tracker};

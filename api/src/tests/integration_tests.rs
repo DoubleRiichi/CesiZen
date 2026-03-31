@@ -2,23 +2,6 @@
 // Tests d'intégration transversaux + helpers partagés
 // ============================================================
 
-pub mod helpers {
-    use axum::Router;
-    use sqlx::postgres::PgPoolOptions;
-
-    pub async fn build_test_app() -> Router {
-        let url = std::env::var("DATABASE_TEST_URL")
-            .expect("DATABASE_TEST_URL must be set for HTTP integration tests");
-
-        let pool = PgPoolOptions::new()
-            .max_connections(2)
-            .connect(&url)
-            .await
-            .expect("Failed to connect to test DB");
-
-        crate::build_app(pool)
-    }
-}
 
 #[cfg(test)]
 #[cfg(feature = "integration")]

@@ -4,6 +4,7 @@ use crate::modules::feeling_category::service::FeelingCategoryService;
 use crate::AppState;
 use axum::extract::{Path, State};
 use axum::{debug_handler, Json};
+use crate::auth::guards::RequireAdmin;
 
 #[utoipa::path(
     get,
@@ -29,6 +30,7 @@ pub async fn get_feeling_category_by_id(
 )]
 #[debug_handler]
 pub async fn create_feeling_category(
+    RequireAdmin(_claims): RequireAdmin,
     State(pool): State<AppState>,
     Json(body): Json<FeelingCategoryCreate>
 ) -> Result<Json<i32>, AppError> {
@@ -61,6 +63,7 @@ pub async fn search_feeling_category(
 )]
 #[debug_handler]
 pub async fn delete_feeling_category(
+    RequireAdmin(_claims): RequireAdmin,
     State(pool): State<AppState>,
     Path(id): Path<i32>,
 ) -> Result<Json<()>, AppError> {

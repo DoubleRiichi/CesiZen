@@ -17,7 +17,7 @@ impl FeelingTrackerService {
         Ok(feeling_tracker.into())
     }
 
-    pub async fn search(pool: &PgPool, search_parameters: FeelingTrackerSearchParams) -> Result<Vec<FeelingTrackerGet>, AppError> {
+    pub async fn search(pool: &PgPool, user_id: i32, search_parameters: FeelingTrackerSearchParams) -> Result<Vec<FeelingTrackerGet>, AppError> {
         let page_size: i32;
 
         if let Some(size) = search_parameters.page_size {
@@ -31,7 +31,7 @@ impl FeelingTrackerService {
         } else {
             page_size = 50;
         }
-        let feeling_trackers_entries = FeelingTrackerRepository::search(pool, search_parameters, page_size)
+        let feeling_trackers_entries = FeelingTrackerRepository::search(pool, user_id, search_parameters, page_size)
             .await?;
 
         Ok(feeling_trackers_entries.into_iter().map(FeelingTrackerGet::from).collect())
