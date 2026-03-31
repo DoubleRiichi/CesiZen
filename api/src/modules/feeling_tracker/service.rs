@@ -1,8 +1,8 @@
-use sqlx::PgPool;
-use validator::Validate;
 use crate::errors::app::AppError;
 use crate::modules::feeling_tracker::dto::{FeelingTrackerCreate, FeelingTrackerGet, FeelingTrackerSearchParams, FeelingTrackerUpdate};
 use crate::modules::feeling_tracker::repository::FeelingTrackerRepository;
+use sqlx::PgPool;
+use validator::Validate;
 
 pub struct FeelingTrackerService {}
 
@@ -45,7 +45,7 @@ impl FeelingTrackerService {
         let created_feeling_tracker = FeelingTrackerRepository::create(pool, feeling_tracker)
             .await?;
 
-        Ok(created_feeling_tracker.into())
+        Ok(created_feeling_tracker)
     }
 
     pub async fn update(pool: &PgPool, feeling_tracker_id: i32, feeling_tracker: FeelingTrackerUpdate) -> Result<(), AppError> {
@@ -59,9 +59,9 @@ impl FeelingTrackerService {
 
     pub async fn delete(pool: &PgPool, feeling_tracker_id: i32) -> Result<(), AppError> {
 
-        let result = FeelingTrackerRepository::delete(pool, feeling_tracker_id)
+        FeelingTrackerRepository::delete(pool, feeling_tracker_id)
             .await?;
 
-        Ok(result)
+        Ok(())
     }
 }

@@ -3,10 +3,7 @@ use axum::{
     response::{IntoResponse, Response},
     Json,
 };
-use log::debug;
-use serde::Serialize;
 use thiserror::Error;
-use validator::ValidationErrors;
 
 #[derive(Error, Debug)]
 pub enum AppError {

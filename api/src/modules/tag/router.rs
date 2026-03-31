@@ -1,7 +1,7 @@
-use axum::Router;
-use axum::routing::{delete, get, post};
-use crate::AppState;
 use crate::modules::tag::handler::{all_tag, create_tag, delete_tag, get_tag_by_id};
+use crate::AppState;
+use axum::routing::{delete, get, post};
+use axum::Router;
 
 pub fn router() -> Router<AppState> {
     Router::new()

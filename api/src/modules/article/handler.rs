@@ -1,12 +1,9 @@
-use std::result;
-use axum::extract::{Path, State};
-use axum::http::StatusCode;
-use axum::{debug_handler, Json};
-use sqlx::PgPool;
-use crate::AppState;
 use crate::errors::app::AppError;
 use crate::modules::article::dto::{ArticleCreate, ArticleGet, ArticleSearchParams, ArticleUpdate};
 use crate::modules::article::service::ArticleService;
+use crate::AppState;
+use axum::extract::{Path, State};
+use axum::{debug_handler, Json};
 
 #[utoipa::path(
     get,

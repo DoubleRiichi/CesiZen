@@ -1,11 +1,9 @@
+use crate::modules::article::model::ArticleWithAuthorRow;
+use crate::modules::user::dto::UserGetSimple;
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 use validator::Validate;
-use crate::modules::article::model::{ArticleVisibility, ArticleWithAuthorRow};
-use crate::modules::tag::dto::TagGet;
-use crate::modules::tag::model::TagRow;
-use crate::modules::user::dto::UserGetSimple;
 
 #[derive(Serialize, ToSchema, Debug)]
 pub struct ArticleGet {

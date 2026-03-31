@@ -1,6 +1,6 @@
-use std::fmt;
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
+use std::fmt;
 use utoipa::ToSchema;
 
 #[derive(sqlx::FromRow)]

@@ -1,7 +1,7 @@
-use axum::Router;
-use axum::routing::{delete, get, post};
-use crate::AppState;
 use crate::modules::feeling_tracker::handler::{create_feeling_tracker, delete_feeling_tracker, get_feeling_tracker_by_id, search_feeling_tracker};
+use crate::AppState;
+use axum::routing::{delete, get, post};
+use axum::Router;
 
 pub fn router() -> Router<AppState> {
     Router::new()

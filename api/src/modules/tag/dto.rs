@@ -1,6 +1,6 @@
+use crate::modules::tag::model::TagRow;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
-use crate::modules::tag::model::TagRow;
 
 #[derive(Serialize, Debug, ToSchema)]
 pub struct TagGet {

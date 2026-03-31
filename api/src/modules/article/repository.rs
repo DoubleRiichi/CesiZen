@@ -1,11 +1,7 @@
-use std::fmt;
-use crate::modules::article::model::ArticleVisibility;
-use sqlx::PgPool;
-use log::debug;
 use crate::errors::app::AppError;
 use crate::modules::article::dto::{ArticleCreate, ArticleSearchParams, ArticleUpdate};
 use crate::modules::article::model::ArticleWithAuthorRow;
-use crate::modules::user::model::UserRow;
+use sqlx::PgPool;
 
 pub struct ArticleRepository;
 
@@ -95,13 +91,13 @@ impl ArticleRepository {
             qb.push_bind(end);
         }
 
-        if let Some(tag_ids) = params.tag_ids {
-            if !tag_ids.is_empty() {
+        if let Some(tag_ids) = params.tag_ids
+            && !tag_ids.is_empty() {
                 qb.push(" AND at.tag_id = ANY(");
                 qb.push_bind(tag_ids);
                 qb.push(")");
             }
-        }
+
 
         if let Some(cursor) = params.cursor {
             qb.push(" AND a.created_at < ");

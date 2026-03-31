@@ -1,15 +1,11 @@
-use std::result;
-use axum::extract::{Path, State};
-use axum::http::StatusCode;
-use axum::{debug_handler, Json};
-use sqlx::PgPool;
-use crate::AppState;
 use crate::errors::app::AppError;
 use crate::modules::article::dto::ArticleUpdate;
-use crate::modules::user::dto::{UserGet, UserCreate, UserUpdate, UserSearchParams};
-use crate::modules::user::model::UserRole;
+use crate::modules::user::dto::{UserCreate, UserGet, UserSearchParams, UserUpdate};
 use crate::modules::user::repository::UserRepository;
 use crate::modules::user::service::UserService;
+use crate::AppState;
+use axum::extract::{Path, State};
+use axum::{debug_handler, Json};
 
 #[utoipa::path(
     get,

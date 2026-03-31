@@ -1,0 +1,10 @@
+pub mod user_tests;
+pub mod article_tests;
+pub mod tag_tests;
+pub mod feeling_tests;
+pub mod feeling_tracker_tests;
+pub mod integration_tests;
+pub mod auth_tests;
+
+use crate::AppState;
+use crate::modules::{feeling, feeling_category, feeling_tracker};

@@ -1,10 +1,8 @@
-
-use sqlx::PgPool;
-use validator::Validate;
 use crate::errors::app::AppError;
 use crate::modules::feeling::dto::{FeelingCreate, FeelingGet, FeelingSearchParams, FeelingUpdate};
 use crate::modules::feeling::repository::FeelingRepository;
-use crate::modules::tag::repository::TagRepository;
+use sqlx::PgPool;
+use validator::Validate;
 
 pub struct FeelingService;
 
@@ -47,7 +45,7 @@ impl FeelingService {
         let created_feeling = FeelingRepository::create(pool, feeling)
             .await?;
 
-        Ok(created_feeling.into())
+        Ok(created_feeling)
     }
 
     pub async fn update(pool: &PgPool, feeling_id: i32, feeling: FeelingUpdate) -> Result<(), AppError> {
@@ -61,9 +59,9 @@ impl FeelingService {
 
     pub async fn delete(pool: &PgPool, feeling_id: i32) -> Result<(), AppError> {
 
-        let result = FeelingRepository::delete(pool, feeling_id)
+        FeelingRepository::delete(pool, feeling_id)
             .await?;
 
-        Ok(result)
+        Ok(())
     }
 }

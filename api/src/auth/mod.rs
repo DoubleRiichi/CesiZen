@@ -2,9 +2,9 @@ pub mod claims;
 pub mod middleware;
 pub mod guards;
 
-use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
 use crate::auth::claims::Claims;
 use crate::errors::app::AppError;
+use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
 
 pub fn jwt_secret() -> String {
     std::env::var("JWT_SECRET").expect("JWT_SECRET must be set")

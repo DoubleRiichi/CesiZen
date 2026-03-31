@@ -1,9 +1,7 @@
-use sqlx::PgPool;
 use crate::errors::app::AppError;
 use crate::modules::tag::dto::TagCreate;
 use crate::modules::tag::model::TagRow;
-use crate::modules::user::dto::{UserCreate, UserGet, UserUpdate};
-use crate::modules::user::model::{UserRole, UserRow};
+use sqlx::PgPool;
 
 pub struct TagRepository;
 
