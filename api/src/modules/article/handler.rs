@@ -4,6 +4,7 @@ use crate::modules::article::service::ArticleService;
 use crate::AppState;
 use axum::extract::{Path, State};
 use axum::{debug_handler, Json};
+use crate::auth::guards::RequireAdmin;
 
 #[utoipa::path(
     get,
@@ -33,6 +34,7 @@ pub async fn get_article_by_id(
 )]
 #[debug_handler]
 pub async fn create_article(
+    RequireAdmin(_claims): RequireAdmin,
     State(pool): State<AppState>,
     Json(body): Json<ArticleCreate>
 ) -> Result<Json<i32>, AppError> {
@@ -66,6 +68,7 @@ pub async fn search_article(
 )]
 #[debug_handler]
 pub async fn update_article(
+    RequireAdmin(_claims): RequireAdmin,
     State(pool): State<AppState>,
     Path(id): Path<i32>,
     Json(body): Json<ArticleUpdate>
@@ -83,6 +86,7 @@ pub async fn update_article(
 )]
 #[debug_handler]
 pub async fn delete_article(
+    RequireAdmin(_claims): RequireAdmin,
     State(pool): State<AppState>,
     Path(id): Path<i32>,
 ) -> Result<Json<()>, AppError> {

@@ -4,6 +4,7 @@ use crate::modules::tag::service::TagService;
 use crate::AppState;
 use axum::extract::{Path, State};
 use axum::{debug_handler, Json};
+use crate::auth::guards::RequireAdmin;
 
 #[utoipa::path(
     get,
@@ -26,6 +27,7 @@ pub async fn get_tag_by_id(
 )]
 #[debug_handler]
 pub async fn create_tag(
+    RequireAdmin(_claims): RequireAdmin,
     State(pool): State<AppState>,
     Json(body): Json<TagCreate>
 ) -> Result<Json<TagGet>, AppError> {
@@ -43,6 +45,7 @@ pub async fn create_tag(
 )]
 #[debug_handler]
 pub async fn delete_tag(
+    RequireAdmin(_claims): RequireAdmin,
     State(pool): State<AppState>,
     Path(id): Path<i32>,
 ) -> Result<Json<()>, AppError> {

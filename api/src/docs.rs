@@ -24,6 +24,7 @@
         crate::modules::feeling::handler::get_feeling_by_id,
         crate::modules::feeling::handler::create_feeling,
         crate::modules::feeling::handler::search_feeling,
+        crate::modules::feeling::handler::update_feeling,
         crate::modules::feeling::handler::delete_feeling,
         //Feelings_category
         crate::modules::feeling_category::handler::get_feeling_category_by_id,
@@ -34,9 +35,9 @@
         //Feeling_Tracker
         crate::modules::feeling_tracker::handler::get_feeling_tracker_by_id,
         crate::modules::feeling_tracker::handler::search_feeling_tracker,
+        crate::modules::feeling_tracker::handler::update_feeling_tracker,
         crate::modules::feeling_tracker::handler::delete_feeling_tracker,
         crate::modules::feeling_tracker::handler::create_feeling_tracker,
-        // add the rest...
     ),
     components(
         schemas(

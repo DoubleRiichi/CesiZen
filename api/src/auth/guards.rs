@@ -22,7 +22,6 @@ impl FromRequestParts<AppState> for RequireAdmin {
     }
 }
 
-/// Guard : requiert Admin ou Mod
 pub struct RequireMod(pub Claims);
 
 impl FromRequestParts<AppState> for RequireMod {
@@ -46,5 +45,17 @@ impl FromRequestParts<AppState> for RequireAuth {
     async fn from_request_parts(parts: &mut Parts, state: &AppState) -> Result<Self, Self::Rejection> {
         let claims = Claims::from_request_parts(parts, state).await?;
         Ok(RequireAuth(claims))
+    }
+}
+
+
+
+pub fn assert_owns_resource(claims: &Claims, resource_owner_id: i32) -> Result<(), AppError> {
+    match claims.role {
+        UserRole::Admin => Ok(()),
+        _ if claims.sub == resource_owner_id => Ok(()),
+        _ => Err(AppError::Forbidden(
+            format!("Resource belongs to user {}, not you", resource_owner_id)
+        )),
     }
 }

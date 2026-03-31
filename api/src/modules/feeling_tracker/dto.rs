@@ -52,7 +52,6 @@ pub struct FeelingTrackerCreate {
 
 #[derive(Deserialize, Validate, Debug, ToSchema)]
 pub struct FeelingTrackerUpdate {
-    pub user_id: i32,
     pub feeling_id: i32,
     pub timestamp_start: DateTime<Utc>,
     pub timestamp_end: DateTime<Utc>,
@@ -66,7 +65,6 @@ pub struct FeelingTrackerUpdate {
 
 #[derive(Debug, Deserialize, ToSchema)]
 pub struct FeelingTrackerSearchParams {
-    pub user_id: Option<i32>,
     pub feeling_id: Option<i32>,
     pub start_date: Option<DateTime<Utc>>,
     pub end_date: Option<DateTime<Utc>>,
