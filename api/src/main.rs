@@ -9,6 +9,8 @@ use dotenv::dotenv;
 use sqlx::{postgres::PgPoolOptions, PgPool};
 use std::env;
 use tokio::net::TcpListener;
+use tower_http::cors::{CorsLayer, Any};
+use axum::http::Method;
 
 pub fn build_app(pool: sqlx::PgPool) -> axum::Router {
     use crate::modules::{article, feeling, feeling_category, feeling_tracker, tag, user};
@@ -52,8 +54,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .await
         .expect("Failed to connect to PostgreSQL");
 
+    let cors = CorsLayer::new()
+        .allow_origin(Any)
+        .allow_methods([Method::GET, Method::POST, Method::PUT, Method::DELETE])
+        .allow_headers(Any);
 
-    let app = build_app(pool);
+    let app = build_app(pool).layer(cors);
+
+
 
     let listener = TcpListener::bind("0.0.0.0:8080").await
         .expect("Failed to bind 0.0.0.0:8080");
