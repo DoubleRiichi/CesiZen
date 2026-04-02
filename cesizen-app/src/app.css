@@ -1,0 +1,6 @@
+/* Ou un autre thème : modern, vintage, crimson, seafoam, gold... */
+
+@import 'tailwindcss';
+@import '@skeletonlabs/skeleton';
+@import '@skeletonlabs/skeleton-themes/cerberus';
+@import '@skeletonlabs/skeleton/optional/forms';
