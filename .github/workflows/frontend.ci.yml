@@ -16,6 +16,7 @@ jobs:
           POSTGRES_USER: test
           POSTGRES_PASSWORD: test
           POSTGRES_DB: test_db
+
         ports:
           - 5432:5432
         options: >-
@@ -28,6 +29,7 @@ jobs:
       DATABASE_URL: postgres://test:test@localhost:5432/test_db
       DATABASE_TEST_URL: postgres://test:test@localhost:5432/test_db
       JWT_SECRET: ci_secret_suffisamment_long_pour_jwt_32chars
+      VITE_API_URL: http://127:0:0:1:8080
 
     steps:
       - uses: actions/checkout@v4
