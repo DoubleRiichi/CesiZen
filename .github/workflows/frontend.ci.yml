@@ -29,7 +29,7 @@ jobs:
       DATABASE_URL: postgres://test:test@localhost:5432/test_db
       DATABASE_TEST_URL: postgres://test:test@localhost:5432/test_db
       JWT_SECRET: ci_secret_suffisamment_long_pour_jwt_32chars
-      VITE_API_URL: http://127:0:0:1:8080
+      VITE_API_URL: http://127.0.0.1:8080
 
     steps:
       - uses: actions/checkout@v4
@@ -100,14 +100,14 @@ jobs:
         run: corepack enable
 
       - name: Install dependencies
-        working-directory: frontcesizen-append
+        working-directory: cesizen_app
         run: pnpm install --frozen-lockfile
 
       # -------------------
       # Run frontend tests
       # -------------------
       - name: Run Vitest
-        working-directory: frontencesizen-appd
+        working-directory: cesizen_app
         run: pnpm test
 
       # -------------------
