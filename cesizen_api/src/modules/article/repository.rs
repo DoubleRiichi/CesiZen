@@ -98,6 +98,10 @@ impl ArticleRepository {
                 qb.push(")");
             }
 
+        if let Some(visibility) = params.visibility {
+            qb.push(" AND a.visibility = ");
+            qb.push_bind(visibility);
+        }
 
         if let Some(cursor) = params.cursor {
             qb.push(" AND a.created_at < ");

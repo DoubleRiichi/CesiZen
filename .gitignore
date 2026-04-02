@@ -1,0 +1,4 @@
+/target
+*.env
+api/.sqlx/*.json
+.idea/**

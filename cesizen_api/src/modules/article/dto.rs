@@ -1,4 +1,4 @@
-use crate::modules::article::model::ArticleWithAuthorRow;
+use crate::modules::article::model::{ArticleVisibility, ArticleWithAuthorRow};
 use crate::modules::user::dto::UserGetSimple;
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
@@ -68,6 +68,7 @@ pub struct ArticleSearchParams {
     pub author_id: Option<i32>,
     pub title: Option<String>,
     pub content: Option<String>,
+    pub visibility: Option<ArticleVisibility>,
     pub start_date: Option<chrono::DateTime<Utc>>,
     pub end_date: Option<chrono::DateTime<Utc>>,
     pub tag_ids: Option<Vec<i32>>,

@@ -1,0 +1,2 @@
+[workspace]
+members = ["cesizen_api"]
