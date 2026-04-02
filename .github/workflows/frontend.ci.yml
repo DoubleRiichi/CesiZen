@@ -1,0 +1,109 @@
+name: Fullstack CI
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test_fullstack:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U test"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      DATABASE_URL: postgres://test:test@localhost:5432/test_db
+      DATABASE_TEST_URL: postgres://test:test@localhost:5432/test_db
+      JWT_SECRET: ci_secret_suffisamment_long_pour_jwt_32chars
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # -------------------
+      # Backend setup
+      # -------------------
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            cesizen_api/target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('cesizen_api/Cargo.lock') }}
+
+      - name: Install sqlx-cli
+        run: cargo install sqlx-cli --no-default-features --features postgres
+
+      - name: Run migrations
+        working-directory: cesizen_api
+        run: sqlx migrate run
+
+      - name: Build API
+        working-directory: cesizen_api
+        run: cargo build --release
+
+      # -------------------
+      # Run API
+      # -------------------
+      - name: Start API
+        working-directory: cesizen_api
+        run: |
+          cargo run --release &
+          echo $! > api.pid
+
+      - name: Wait for API to be ready
+        run: |
+          for i in {1..10}; do
+            nc -z localhost 3000 && echo "API is up!" && exit 0
+            echo "Waiting for API..."
+            sleep 2
+          done
+          echo "API failed to start"
+          exit 1
+
+      # -------------------
+      # Frontend setup (pnpm)
+      # -------------------
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+          cache-dependency-path: cesizen-app/pnpm-lock.yaml
+
+      - name: Enable Corepack (pnpm)
+        run: corepack enable
+
+      - name: Install dependencies
+        working-directory: frontcesizen-append
+        run: pnpm install --frozen-lockfile
+
+      # -------------------
+      # Run frontend tests
+      # -------------------
+      - name: Run Vitest
+        working-directory: frontencesizen-appd
+        run: pnpm test
+
+      # -------------------
+      # Cleanup
+      # -------------------
+      - name: Stop API
+        if: always()
+        run: kill $(cat cesizen_api/api.pid)
