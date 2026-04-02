@@ -39,6 +39,10 @@ pub async fn create_article(
     Json(body): Json<ArticleCreate>
 ) -> Result<Json<i32>, AppError> {
 
+    if _claims.sub != body.author_id {
+        return Err(AppError::Unauthorized)
+    }
+
     ArticleService::create(&pool.db, body)
         .await.map(Json)
 }

@@ -29,7 +29,7 @@ pub fn build_app(pool: sqlx::PgPool) -> axum::Router {
         .nest("/feeling_tracker", feeling_tracker::router::router())
         .merge(
             SwaggerUi::new("/swagger-ui")
-                .url("/api-doc/openapi.json", ApiDoc::openapi()),
+                .url("/cesizen_api-doc/openapi.json", ApiDoc::openapi()),
         )
         .with_state(state)
 }

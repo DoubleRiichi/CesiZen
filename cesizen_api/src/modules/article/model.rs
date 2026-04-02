@@ -2,6 +2,7 @@ use crate::modules::user::model::UserRole;
 use chrono::Utc;
 use serde::Deserialize;
 use std::fmt;
+use utoipa::ToSchema;
 
 #[derive(sqlx::FromRow)]
 pub struct ArticleRow {
@@ -32,7 +33,7 @@ pub struct ArticleWithAuthorRow {
 }
 
 
-#[derive(sqlx::Type, Deserialize, Debug)]
+#[derive(sqlx::Type, Deserialize, Debug, ToSchema)]
 #[sqlx(type_name = "article_visibility", rename_all = "PascalCase")]
 pub enum ArticleVisibility {
     Public,

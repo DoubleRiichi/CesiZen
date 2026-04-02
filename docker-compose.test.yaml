@@ -19,7 +19,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: ./api/Dockerfile.test
+      dockerfile: cesizen_api/Dockerfile.test
     restart: unless-stopped
     depends_on:
       db:
