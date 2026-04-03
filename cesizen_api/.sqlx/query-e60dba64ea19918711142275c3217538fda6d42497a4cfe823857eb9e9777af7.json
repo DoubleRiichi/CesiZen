@@ -1,0 +1,28 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "select * from tag where \"id\" = $1",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "name",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "e60dba64ea19918711142275c3217538fda6d42497a4cfe823857eb9e9777af7"
+}
