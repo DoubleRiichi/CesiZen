@@ -79,9 +79,6 @@ jobs:
           echo "API failed to start"
           exit 1
 
-      # -------------------
-      # Frontend setup (pnpm)
-      # -------------------
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -94,25 +91,14 @@ jobs:
           cache: 'pnpm'
           cache-dependency-path: cesizen-app/pnpm-lock.yaml
 
-
-
-      - name: Enable Corepack (pnpm)
-        run: corepack enable
-
       - name: Install dependencies
         working-directory: cesizen-app
         run: pnpm install --frozen-lockfile
 
-      # -------------------
-      # Run frontend tests
-      # -------------------
       - name: Run Vitest
         working-directory: cesizen-app
         run: pnpm test
 
-      # -------------------
-      # Cleanup
-      # -------------------
       - name: Stop API
         if: always()
         run: kill $(cat cesizen_api/api.pid)

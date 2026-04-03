@@ -47,7 +47,7 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            api/target
+            cesizen_api/target
           key: ${{ runner.os }}-cargo-${{ hashFiles('cesizen_api/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-cargo-
 
