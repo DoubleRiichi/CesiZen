@@ -1,0 +1,28 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT t.id, t.name\n                FROM \"article_tag\" at\n                JOIN tag t ON t.id = at.tag_id\n                WHERE at.article_id = $1",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "name",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "06e2d3e31c79acb2286045b2c4df7c201117d9e0d85ea5e8368f9c1a1d3c6ec0"
+}

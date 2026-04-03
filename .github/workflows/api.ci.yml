@@ -1,12 +1,12 @@
 name: Rust API CI
 
 on:
-  pull_request:
+  push:
     branches:
-      - master
+      - "backend/**"
 
 jobs:
-  test:
+  test_api:
     runs-on: ubuntu-latest
 
     services:
@@ -47,7 +47,7 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            api/target
+            cesizen_api/target
           key: ${{ runner.os }}-cargo-${{ hashFiles('cesizen_api/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-cargo-
 
