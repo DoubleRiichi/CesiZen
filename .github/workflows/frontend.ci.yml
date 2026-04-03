@@ -3,7 +3,7 @@ name: Fullstack CI
 on:
   pull_request:
     branches:
-      - master
+      - "frontend/**"
 
 jobs:
   test_fullstack:

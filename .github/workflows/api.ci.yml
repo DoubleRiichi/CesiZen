@@ -3,7 +3,7 @@ name: Rust API CI
 on:
   pull_request:
     branches:
-      - master
+      - "backend/**"
 
 jobs:
   test_api:
