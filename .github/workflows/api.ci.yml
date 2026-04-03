@@ -1,7 +1,7 @@
 name: Rust API CI
 
 on:
-  pull_request:
+  push:
     branches:
       - "backend/**"
 
