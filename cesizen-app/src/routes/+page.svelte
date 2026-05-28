@@ -29,7 +29,6 @@
 
 <section class="features">
 	<div class="feature-card">
-		<div class="feature-card__icon">📰</div>
 		<h3 class="feature-card__title">Articles & Informations</h3>
 		<p class="feature-card__text">
 			Accédez à des contenus validés sur la santé mentale, le stress et la prévention.
@@ -37,7 +36,6 @@
 	</div>
 
 	<div class="feature-card">
-		<div class="feature-card__icon">🎯</div>
 		<h3 class="feature-card__title">Tracker d'émotions</h3>
 		<p class="feature-card__text">
 			Suivez vos émotions au quotidien et visualisez votre évolution sur la durée.
@@ -45,7 +43,6 @@
 	</div>
 
 	<div class="feature-card">
-		<div class="feature-card__icon">🔒</div>
 		<h3 class="feature-card__title">Données sécurisées</h3>
 		<p class="feature-card__text">
 			Vos données sont protégées selon les normes RGPD. Rien ne sort de l'UE.
