@@ -3,6 +3,7 @@
 > Application web de gestion du stress et de suivi émotionnel,
 > commanditée par le Ministère de la Santé et de la Prévention. (Pas vraiment, il s'agit d'un projet effectué dans le cadre de mon Bachelor)
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=DoubleRiichi_CesiZen&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=DoubleRiichi_CesiZen)
 ---
 
 ## Présentation
