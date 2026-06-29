@@ -2,9 +2,9 @@
 FROM rust:1.94-slim AS builder
 
 RUN apt-get update && apt-get install -y \
-    pkg-config \
-    libssl-dev \
     curl \
+    libssl-dev \
+    pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
 RUN cargo install sqlx-cli --no-default-features --features postgres
@@ -14,7 +14,7 @@ WORKDIR /app
 COPY cesizen_api/Cargo.toml cesizen_api/Cargo.lock ./
 
 RUN mkdir -p src && echo "fn main() {}" > src/main.rs
-RUN cargo build --features swagger
+RUN cargo build --locked --features swagger
 RUN rm -rf src
 
 COPY cesizen_api/src ./src
@@ -25,11 +25,17 @@ RUN cargo build --features swagger
 # Stage 2: Runtime
 FROM rust:1.94-slim AS runtime
 
+
 RUN apt-get update && apt-get install -y \
     libssl3 \
     ca-certificates \
     curl \
     && rm -rf /var/lib/apt/lists/*
+
+RUN addgroup -S nonroot \
+&& adduser -S nonroot -G nonroot
+
+USER nonroot
 
 COPY --from=builder /usr/local/cargo/bin/sqlx /usr/local/bin/sqlx
 
