@@ -1,0 +1,31 @@
+#Alternative à Husky plus appropriée pour les mono repos rust/ts
+#TODO: mettre à jour la procédure sur le repo en ajoutant l'étape lefthook
+pre-commit:
+  parallel: true
+  commands:
+    frontend-lint:
+      root: "frontend/"
+      glob: "*.{js,ts,svelte}"
+      run: pnpm eslint {staged_files}
+    frontend-format:
+      root: "frontend/"
+      glob: "*.{js,ts,svelte,css,html}"
+      run: pnpm prettier --write {staged_files}
+      stage_fixed: true        # re-stage files prettier fixed
+    backend-fmt:
+      root: "backend/"
+      glob: "*.rs"
+      run: cargo fmt --check
+    backend-clippy:
+      root: "backend/"
+      glob: "*.rs"
+      run: cargo clippy -- -D warnings
+
+pre-push:
+  commands:
+    backend-test:
+      root: "backend/"
+      run: cargo test
+    frontend-check:
+      root: "frontend/"
+      run: pnpm svelte-check
