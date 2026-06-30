@@ -1,10 +1,10 @@
 name: Sonar
 on:
-  push:
+  pull_request:
     branches:
       - master
-      - main
-  pull_request:
+      - main 
+      - develop
     types: [opened, synchronize, reopened]
 jobs:
   sonarqube:
