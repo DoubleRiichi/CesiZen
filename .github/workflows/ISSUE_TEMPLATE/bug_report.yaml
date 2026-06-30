@@ -1,0 +1,20 @@
+name: Anomalie (bug)
+description: Signaler un dysfonctionnement
+labels: ["bug", "triage"]
+body:
+  - type: textarea
+    attributes: { label: Description }
+    validations: { required: true }
+  - type: textarea
+    attributes: { label: Étapes de reproduction }
+    validations: { required: true }
+  - type: textarea
+    attributes: { label: Comportement attendu }
+  - type: textarea
+    attributes: { label: Comportement observé }
+  - type: input
+    attributes: { label: Environnement (URL, navigateur, version) }
+  - type: dropdown
+    attributes:
+      label: Sévérité proposée
+      options: ["Bloquant critique", "Bloquant fort", "Majeur", "Mineur"]

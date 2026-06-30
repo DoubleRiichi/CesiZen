@@ -86,7 +86,7 @@
 <div class="articles-page">
 	<header class="page-header">
 		<h1 class="page-title">Informations & Articles</h1>
-		<p class="page-subtitle">Contenus validés sur la santé mentale et la prévention du stress</p>
+		<p class="page-subtitle">Contenus sur la santé mentale et la prévention du stress</p>
 	</header>
 
 	<!-- Barre de recherche & filtres -->
