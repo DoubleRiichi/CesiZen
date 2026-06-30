@@ -144,6 +144,36 @@ cd cesizen-app
 pnpm test
 ```
 
+## Déploiement continu (CD)
+
+Le déploiement est automatisé par le workflow `.github/workflows/cd.yml`,
+**distinct** des workflows d'intégration continue.
+
+### Condition d'activation
+Le pipeline de déploiement se déclenche **uniquement sur un push (merge) vers
+`master`**. Les branches de feature (`backend/**`, `frontend/**`) ne déclenchent
+que la CI (tests + clippy), jamais le déploiement.
+
+### Processus
+1. **Build & push** (runner GitHub) : construction des images Docker `api` et
+   `front`, puis publication sur GHCR (tags `:latest` et `:<sha>`).
+2. **Deploy** (runner self-hosted local) : exécuté seulement si le build a réussi.
+   - `docker compose -f docker-compose.deploy.yaml pull` : récupère les images ;
+   - `docker compose ... up -d` : arrête les anciens conteneurs et relance les
+     nouveaux proprement ;
+   - les migrations SQL nouvelles sont appliquées au démarrage (`migrate-and-serve`) ;
+   - un health-check sur `/health` valide le déploiement.
+
+### Garantie sur les données
+Le volume `postgres_data` est conservé à chaque déploiement. Le pipeline n'exécute
+jamais `down -v` : aucune donnée utilisateur n'est écrasée. Les migrations sont
+idempotentes (seules les nouvelles sont appliquées).
+
+### Accès après déploiement
+- Front : http://localhost:3000
+- API / Swagger : http://localhost:8080/swagger-ui/
+
+
 ---
 
 ##  Licence
