@@ -26,8 +26,8 @@
 	let formNotes = $state('');
 	let formLocation = $state('');
 	let formSubmitting = $state(false);
-	let formStart = $state('')
-	let formEnd = $state('')
+	let formStart = $state('');
+	let formEnd = $state('');
 
 	// ── Computed ─────────────────────────────────────────────
 	let currentYear = $derived(currentDate.getFullYear());
@@ -42,9 +42,9 @@
 		const startPad = (firstDay.getDay() + 6) % 7; // Lundi = 0
 		const days: Array<{ date: string; day: number; inMonth: boolean }> = [];
 
-		// Jours du mois précédent
-		for (let i = startPad - 1; i >= 0; i--) {
-			const d = new Date(currentYear, currentMonth, -i);
+		// Jours du mois précédent (padding)
+		for (let i = startPad; i > 0; i--) {
+			const d = new Date(currentYear, currentMonth, 1 - i);
 			days.push({ date: toDateKey(d), day: d.getDate(), inMonth: false });
 		}
 
@@ -123,8 +123,16 @@
 	}
 
 	// ── Helpers ──────────────────────────────────────────────
+
+	/**
+	 * Génère une clé de date locale YYYY-MM-DD sans passer par toISOString()
+	 * qui convertit en UTC et décale d'un jour en fuseau positif (ex: Europe/Paris).
+	 */
 	function toDateKey(d: Date): string {
-		return d.toISOString().slice(0, 10);
+		const y = d.getFullYear();
+		const m = String(d.getMonth() + 1).padStart(2, '0');
+		const day = String(d.getDate()).padStart(2, '0');
+		return `${y}-${m}-${day}`;
 	}
 
 	function prevMonth() {
@@ -206,9 +214,13 @@
 				<h1 class="dash-title">Mon Tracker d'émotions</h1>
 				<p class="dash-subtitle">Dashboard</p>
 			</div>
+			<a href="/dashboard/stats" class="btn btn--outline">
+    			Statistiques
+			</a>
 			<button class="btn btn--primary" onclick={openAddForm}>
 				+ Ajouter une émotion
 			</button>
+
 		</header>
 
 		<!-- Indicateurs -->
@@ -343,7 +355,6 @@
 							bind:value={formStart}
 						/>
 					</label>
-
 
 					<label class="form-group">
 						<span class="form-label">Fin :</span>

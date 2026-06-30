@@ -1,0 +1,19 @@
+name: Proposition d'amélioration
+description: Template permettant de proposer une évolution
+labels: ["feature", "triage"]
+body:
+  - type: textarea
+    attributes: { label: Description }
+    validations: { required: true }
+  - type: textarea
+    attributes: { label: Cas d'usage }
+    validations: { required: true }
+  - type: textarea
+    attributes: { label: Public cible }
+  - type: dropdown
+    attributes:
+      label: Module concerné
+      options: ["Articles", "Utilisateurs", "Commentaires", "Tracker d'émotions", "Statistiques d'utilisation", "Autres"]
+  - type: input
+    attributes:
+      - label: Si autres, précisez

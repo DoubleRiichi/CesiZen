@@ -11,27 +11,36 @@ use std::env;
 use tokio::net::TcpListener;
 use tower_http::cors::{CorsLayer, Any};
 use axum::http::Method;
+#[cfg(feature = "swagger")] 
+use utoipa_swagger_ui::SwaggerUi;
+#[cfg(feature = "swagger")] 
+use utoipa::OpenApi;
+#[cfg(feature = "swagger")] 
+use crate::docs::ApiDoc;
+
+
 
 pub fn build_app(pool: sqlx::PgPool) -> axum::Router {
     use crate::modules::{article, feeling, feeling_category, feeling_tracker, tag, user};
-    use utoipa::OpenApi;
-    use utoipa_swagger_ui::SwaggerUi;
-    use crate::docs::ApiDoc;
 
     let state = crate::AppState { db: pool };
 
-    axum::Router::new()
+    let app = axum::Router::new()
         .nest("/article", article::router::router())
         .nest("/user", user::router::router())
         .nest("/tag", tag::router::router())
         .nest("/feeling", feeling::router::router())
         .nest("/feeling_category", feeling_category::router::router())
         .nest("/feeling_tracker", feeling_tracker::router::router())
-        .merge(
+        .with_state(state);
+   
+    #[cfg(feature = "swagger")]
+    app.merge(
             SwaggerUi::new("/swagger-ui")
                 .url("/cesizen_api-doc/openapi.json", ApiDoc::openapi()),
-        )
-        .with_state(state)
+        );
+    
+    app
 }
 
 #[derive(Clone)]
