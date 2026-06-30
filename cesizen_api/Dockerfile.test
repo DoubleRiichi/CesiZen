@@ -14,13 +14,13 @@ WORKDIR /app
 COPY cesizen_api/Cargo.toml cesizen_api/Cargo.lock ./
 
 RUN mkdir -p src && echo "fn main() {}" > src/main.rs
-RUN cargo build --locked --features swagger
+RUN cargo build --locked --features swagger --locked
 RUN rm -rf src
 
 COPY cesizen_api/src ./src
 
 RUN touch src/main.rs
-RUN cargo build --features swagger
+RUN cargo build --features swagger --locked
 
 # Stage 2: Runtime
 FROM rust:1.94-slim AS runtime
