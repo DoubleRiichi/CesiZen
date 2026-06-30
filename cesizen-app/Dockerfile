@@ -6,8 +6,8 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --ignore-scripts --frozen-lockfile
 COPY . .
-RUN pnpm build
-RUN pnpm prune --prod
+RUN pnpm build \
+ && pnpm prune --prod
 
 # ---- Stage 2 : runtime ----
 FROM node:22-alpine AS runtime
