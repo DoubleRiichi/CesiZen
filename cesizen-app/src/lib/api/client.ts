@@ -3,7 +3,9 @@
  * Gère l'injection du JWT, le refresh (si implémenté), et le parsing JSON.
  */
 
-const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
+import { env } from '$env/dynamic/public';
+
+const API_BASE = env.PUBLIC_API_URL ?? 'http://localhost:8080';
 
 export class ApiError extends Error {
 	constructor(
