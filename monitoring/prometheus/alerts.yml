@@ -1,0 +1,67 @@
+# Règles d'alerte — CESIZen
+# Sévérités alignées sur la grille du plan de maintenance :
+#   critical -> incident bloquant (prise en compte 1-2 h ouvrées)
+#   warning  -> incident majeur/mineur selon contexte
+groups:
+  - name: cesizen-disponibilite
+    rules:
+      - alert: APIIndisponible
+        expr: probe_success{job="blackbox-api"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "API CESIZen indisponible"
+          description: "L'endpoint /health ne répond plus depuis 1 minute ({{ $labels.instance }})."
+
+      - alert: FrontIndisponible
+        expr: probe_success{job="blackbox-front"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Front CESIZen indisponible"
+          description: "Le front ne répond plus depuis 2 minutes ({{ $labels.instance }})."
+
+      - alert: CibleSupervisionDown
+        expr: up == 0
+        for: 3m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Cible de supervision injoignable : {{ $labels.job }}"
+          description: "Prometheus ne parvient plus à collecter {{ $labels.instance }} depuis 3 minutes."
+
+  - name: cesizen-serveur
+    rules:
+      - alert: DisqueBientotPlein
+        expr: >
+          (node_filesystem_avail_bytes{mountpoint="/",fstype!~"tmpfs|overlay"}
+           / node_filesystem_size_bytes{mountpoint="/",fstype!~"tmpfs|overlay"}) < 0.15
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Disque rempli à plus de 85 %"
+          description: "Il reste moins de 15 % d'espace libre sur / ({{ $value | humanizePercentage }} restant)."
+
+      - alert: MemoireSaturee
+        expr: >
+          (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) < 0.10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Mémoire disponible < 10 %"
+          description: "Le serveur manque de mémoire, risque d'OOM kill des conteneurs."
+
+  - name: cesizen-conteneurs
+    rules:
+      - alert: ConteneurEnRedemarrageEnBoucle
+        expr: changes(container_start_time_seconds{name=~"cesizen.*"}[15m]) > 3
+        for: 0m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Conteneur {{ $labels.name }} en redémarrage en boucle"
+          description: "Plus de 3 redémarrages en 15 minutes : le healthcheck échoue probablement."

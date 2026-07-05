@@ -1,0 +1,130 @@
+# Stack de supervision CESIZen séparée de la stack applicative (docker-compose.deploy.yaml)
+# Lancement :  docker compose -f docker-compose.monitoring.yaml up -d
+# Pré-requis : la stack applicative doit tourner (réseau externe cesizen-prod_default)
+name: cesizen-monitoring
+
+services:
+  # ---------- Métriques ----------
+  prometheus:
+    image: prom/prometheus:v3.2.1
+    restart: always
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.retention.time=30d"
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/prometheus/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "127.0.0.1:9090:9090"   # accès local uniquement (tunnel SSH ou reverse proxy)
+    networks: [monitoring]
+
+  node-exporter:
+    image: prom/node-exporter:v1.9.1
+    restart: always
+    command:
+      - "--path.procfs=/host/proc"
+      - "--path.sysfs=/host/sys"
+      - "--path.rootfs=/rootfs"
+    pid: host
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    networks: [monitoring]
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.52.1
+    restart: always
+    privileged: true
+    devices:
+      - /dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks: [monitoring]
+
+  # Sonde HTTP interne : vérifie /health de l'API à travers le réseau applicatif
+  blackbox-exporter:
+    image: prom/blackbox-exporter:v0.26.0
+    restart: always
+    networks:
+      - monitoring
+      - app   # réseau de la stack cesizen-prod, pour joindre api:8080
+
+  # ---------- Logs ----------
+  loki:
+    image: grafana/loki:3.4.2
+    restart: always
+    command: ["-config.file=/etc/loki/loki-config.yml"]
+    volumes:
+      - ./monitoring/loki/loki-config.yml:/etc/loki/loki-config.yml:ro
+      - loki_data:/loki
+    networks: [monitoring]
+
+  promtail:
+    image: grafana/promtail:3.4.2
+    restart: always
+    command: ["-config.file=/etc/promtail/promtail-config.yml"]
+    volumes:
+      - ./monitoring/promtail/promtail-config.yml:/etc/promtail/promtail-config.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - promtail_positions:/positions
+    networks: [monitoring]
+
+  # ---------- Alertes ----------
+  alertmanager:
+    image: prom/alertmanager:v0.28.1
+    restart: always
+    command: ["--config.file=/etc/alertmanager/alertmanager.yml"]
+    volumes:
+      - ./monitoring/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      - ./monitoring/alertmanager/discord_webhook_url:/etc/alertmanager/discord_webhook_url:ro
+      - alertmanager_data:/alertmanager
+    ports:
+      - "127.0.0.1:9093:9093"
+    networks: [monitoring]
+
+  # ---------- Visualisation ----------
+  grafana:
+    image: grafana/grafana:11.6.0
+    restart: always
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "127.0.0.1:3001:3000"   # le port 3000 public est déjà pris par le front
+    networks: [monitoring]
+
+  # ---------- Disponibilité (sonde externe + page de statut) ----------
+  uptime-kuma:
+    image: louislam/uptime-kuma:1.23.16
+    restart: always
+    volumes:
+      - uptime_kuma_data:/app/data
+    ports:
+      - "127.0.0.1:3002:3001"
+    networks: 
+      - monitoring
+      - app  
+
+networks:
+  monitoring:
+  app:
+    external: true
+    name: cesizen-prod_default   # réseau créé par docker-compose.deploy.yaml
+
+volumes:
+  prometheus_data:
+  loki_data:
+  promtail_positions:
+  alertmanager_data:
+  grafana_data:
+  uptime_kuma_data:

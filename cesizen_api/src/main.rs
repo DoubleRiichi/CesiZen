@@ -10,13 +10,14 @@ use sqlx::{postgres::PgPoolOptions, PgPool};
 use std::env;
 use tokio::net::TcpListener;
 use tower_http::cors::{CorsLayer, Any};
-use axum::http::Method;
+use axum::{http::Method, routing::get};
 #[cfg(feature = "swagger")] 
 use utoipa_swagger_ui::SwaggerUi;
 #[cfg(feature = "swagger")] 
 use utoipa::OpenApi;
 #[cfg(feature = "swagger")] 
 use crate::docs::ApiDoc;
+use crate::modules::health::health_check;
 
 
 
@@ -26,6 +27,7 @@ pub fn build_app(pool: sqlx::PgPool) -> axum::Router {
     let state = crate::AppState { db: pool };
 
     let app = axum::Router::new()
+        .route("/health", get(health_check))
         .nest("/article", article::router::router())
         .nest("/user", user::router::router())
         .nest("/tag", tag::router::router())
@@ -35,7 +37,7 @@ pub fn build_app(pool: sqlx::PgPool) -> axum::Router {
         .with_state(state);
    
     #[cfg(feature = "swagger")]
-    app.merge(
+    let app = app.merge(
             SwaggerUi::new("/swagger-ui")
                 .url("/cesizen_api-doc/openapi.json", ApiDoc::openapi()),
         );

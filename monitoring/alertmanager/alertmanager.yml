@@ -1,0 +1,40 @@
+# Alertmanager — CESIZen
+# L'URL du webhook Discord est lue depuis un fichier monté (non versionné) :
+#   monitoring/alertmanager/discord_webhook_url  (une seule ligne : l'URL)
+# Ce fichier est listé dans le .gitignore, comme le .env.
+route:
+  receiver: discord
+  group_by: [alertname]
+  group_wait: 30s        # laisse le temps de grouper les alertes liées
+  group_interval: 5m
+  repeat_interval: 4h    # relance tant que l'incident n'est pas résolu
+  routes:
+    - matchers: ['severity="critical"']
+      receiver: discord
+      repeat_interval: 1h   # les incidents bloquants relancent plus souvent
+
+receivers:
+  - name: discord
+    discord_configs:
+      - webhook_url_file: /etc/alertmanager/discord_webhook_url
+        title: '[CESIZen] {{ .Status | toUpper }} — {{ .CommonLabels.alertname }}'
+        message: >-
+          {{ range .Alerts }}{{ .Annotations.summary }} —
+          {{ .Annotations.description }}
+          {{ end }}
+          Procédure : ouvrir un ticket "Anomalie" (sévérité selon la grille du plan de maintenance).
+
+  # Alternative / complément e-mail — décommenter et compléter :
+  # - name: email
+  #   email_configs:
+  #     - to: astreinte@exemple.fr
+  #       from: alertmanager@exemple.fr
+  #       smarthost: smtp.exemple.fr:587
+  #       auth_username: alertmanager@exemple.fr
+  #       auth_password_file: /etc/alertmanager/smtp_password
+
+inhibit_rules:
+  # Si l'API est déjà signalée indisponible, inutile d'alerter aussi sur la cible down
+  - source_matchers: ['alertname="APIIndisponible"']
+    target_matchers: ['alertname="CibleSupervisionDown"']
+    equal: [instance]

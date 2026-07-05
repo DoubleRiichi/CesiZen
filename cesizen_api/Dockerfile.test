@@ -13,7 +13,7 @@ WORKDIR /app
 COPY cesizen_api/Cargo.toml cesizen_api/Cargo.lock ./
 
 RUN mkdir -p src && echo "fn main() {}" > src/main.rs \
-    && cargo build --locked --features swagger --locked \
+    && cargo build --locked --features swagger \
     && rm -rf src
 
 COPY cesizen_api/src ./src
@@ -37,7 +37,7 @@ COPY --from=builder /usr/local/cargo/bin/sqlx /usr/local/bin/sqlx
 
 WORKDIR /app
 
-COPY --from=builder /app/target/release/Cesizen ./api
+COPY --from=builder /app/target/debug/Cesizen ./api
 COPY cesizen_api/migrations ./migrations
 COPY cesizen_api/entrypoint.sh ./entrypoint.sh
 RUN chmod +x entrypoint.sh
