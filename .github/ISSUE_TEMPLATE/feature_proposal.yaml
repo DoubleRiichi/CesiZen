@@ -16,4 +16,4 @@ body:
       options: ["Articles", "Utilisateurs", "Commentaires", "Tracker d'émotions", "Statistiques d'utilisation", "Autres"]
   - type: input
     attributes:
-      - label: Si autres, précisez
+      label: Si autres, précisez
