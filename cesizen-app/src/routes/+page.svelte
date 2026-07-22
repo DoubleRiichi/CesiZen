@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-	<title>CESIZen — Santé mentale et bien-être</title>
+	<title>CESIZen : Santé mentale et bien-être</title>
 </svelte:head>
 
 <section class="hero">
@@ -12,8 +12,8 @@
 			Prenez soin de votre <span class="highlight">santé mentale</span>
 		</h1>
 		<p class="hero__subtitle">
-			CESIZen vous accompagne au quotidien avec des articles, un suivi émotionnel
-			personnalisé et des outils pour mieux gérer votre stress.
+			CESIZen est un service proposé par le Ministère pour vous accompagner au quotidien avec des articles, un suivi émotionnel
+			personnalisé et des outils pour mieux gérer votre stress. 
 		</p>
 		<div class="hero__actions">
 			{#if $isAuthenticated}
